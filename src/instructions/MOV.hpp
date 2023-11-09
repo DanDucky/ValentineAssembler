@@ -9,8 +9,6 @@ public:
     constructor(MOV);
     factory(MOV);
 
-    static constexpr std::string opcode = "MOV";
-
     byte * generate() override;
 };
 

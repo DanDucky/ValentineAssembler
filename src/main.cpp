@@ -7,7 +7,7 @@
 #include "instructions/Instruction.hpp"
 #include "instructions/InstructionLibrary.hpp"
 
-#define vals( instruction ) {instruction::opcode, {&instruction::factory}}
+#define vals( instruction ) {#instruction, {&instruction::factory}}
 
 using namespace std;
 
