@@ -7,7 +7,6 @@ class BRA extends public Instruction {
 public:
 
     constructor(BRA);
-    factory(BRA);
 
     byte * generate() override;
 };

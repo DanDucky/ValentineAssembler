@@ -7,7 +7,6 @@ class MOV extends public Instruction {
 public:
 
     constructor(MOV);
-    factory(MOV);
 
     byte * generate() override;
 };

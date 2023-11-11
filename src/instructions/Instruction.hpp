@@ -26,14 +26,14 @@ public:
         }
     }
 
-    virtual byte* generate() = 0;
-
-#define factory(instruction)                        \
-    static Instruction* factory(std::string line) { \
-        return new instruction(std::move(line));    \
+    template<typename t>
+    static Instruction* factory(std::string line) {
+        return new t(std::move(line));
     }
 
-#define constructor(instruction)                                          \
+    virtual byte* generate() = 0;
+
+#define constructor(instruction)                    \
     explicit instruction (std::string line)
 };
 

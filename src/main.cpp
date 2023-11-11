@@ -7,7 +7,7 @@
 #include "instructions/Instruction.hpp"
 #include "instructions/InstructionLibrary.hpp"
 
-#define vals( instruction ) {#instruction, {&instruction::factory}}
+#define vals( instruction ) {#instruction, {&Instruction::factory<instruction>}}
 
 using namespace std;
 
@@ -25,9 +25,9 @@ int main() {
         vals(MOV),
         vals(BRA)
     };
-    auto element = parser.find("MOV");
+    auto element = parser.find("BRA");
     if (element != parser.end()) {
-        lines.push_back(element->second("MOV nyorm"));
+        lines.push_back(element->second("BRA nyorm"));
     }
 
     for (auto& instruction: lines) {
