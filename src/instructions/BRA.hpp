@@ -8,7 +8,7 @@ public:
 
     constructor(BRA);
 
-    byte * generate() override;
+    void generate(byte* binary) override;
 };
 
 

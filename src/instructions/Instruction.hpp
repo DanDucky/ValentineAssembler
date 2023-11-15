@@ -9,16 +9,24 @@
 typedef std::uint8_t byte;
 
 #define extends :
+#define constructor(instruction)                    \
+    explicit instruction (std::string line)
 
 class Instruction {
 protected:
     std::string line;
+    size_t byteSize;
 
-    explicit Instruction(std::string line) {
+    explicit Instruction(std::string line, size_t size) {
         this->line = std::move(line);
+        this->byteSize = size;
     }
 
 public:
+    size_t size () const {
+        return byteSize;
+    }
+
     static void stripComments (std::string& str) {
         const auto pos = str.find(';');
         if (pos != std::string::npos) {
@@ -31,10 +39,8 @@ public:
         return new t(std::move(line));
     }
 
-    virtual byte* generate() = 0;
+    virtual void generate(byte* binary) = 0;
 
-#define constructor(instruction)                    \
-    explicit instruction (std::string line)
 };
 
 #endif //VALENTINEASSEMBLER_INSTRUCTION_HPP

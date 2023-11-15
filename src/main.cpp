@@ -6,6 +6,7 @@
 
 #include "instructions/Instruction.hpp"
 #include "instructions/InstructionLibrary.hpp"
+#include "parsing/Subroutine.hpp"
 
 #define vals( instruction ) {#instruction, {&Instruction::factory<instruction>}}
 
@@ -19,20 +20,24 @@ void freeInstructions(std::vector<Instruction*>& instructions) {
 
 int main() {
 
-    vector<Instruction*> lines {};
+    vector<Subroutine> lines {};
+    Subroutine origin = Subroutine({0,0});
+    Subroutine interrupt = Subroutine({1,0});
 
     const std::map<string, function<Instruction*(std::string)>> parser = {
         vals(MOV),
         vals(BRA)
     };
     auto element = parser.find("BRA");
+    Instruction* yorp;
     if (element != parser.end()) {
-        lines.push_back(element->second("BRA nyorm"));
+        yorp = element->second("BRA nyorm");
     }
+    delete yorp;
 
     for (auto& instruction: lines) {
-        instruction->generate();
+//        instruction->generate();
     }
 
-    freeInstructions(lines);
+//    freeInstructions(lines);
 }

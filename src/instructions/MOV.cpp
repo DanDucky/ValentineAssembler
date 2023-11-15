@@ -2,11 +2,8 @@
 
 #include <utility>
 
-byte *MOV::generate() {
-    std::cout << "mov\n";
-    return nullptr;
+MOV::MOV(std::string line) : Instruction(std::move(line), 3) {
 }
 
-MOV::MOV(std::string line) : Instruction(std::move(line)) {
-
+void MOV::generate(byte * binary) {
 }

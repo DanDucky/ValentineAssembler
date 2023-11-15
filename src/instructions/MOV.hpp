@@ -8,7 +8,7 @@ public:
 
     constructor(MOV);
 
-    byte * generate() override;
+    void generate(byte* binary) override;
 };
 
 
