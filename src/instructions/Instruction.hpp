@@ -27,12 +27,6 @@ public:
         return byteSize;
     }
 
-    static void stripComments (std::string& str) {
-        const auto pos = str.find(';');
-        if (pos != std::string::npos) {
-            str.resize(pos);
-        }
-    }
 
     template<typename t>
     static Instruction* factory(std::string line) {

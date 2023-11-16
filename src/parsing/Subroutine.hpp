@@ -12,38 +12,20 @@ private:
     std::optional<size_t> fixedOffset;
 public:
     Subroutine() {}
-    explicit Subroutine (Address address) {
-        fixedOffset = address;
-    }
+    explicit Subroutine (Address address);
+    ~Subroutine();
 
-    Subroutine* setOffset(Address address) {
-        fixedOffset = address;
-        return this;
-    }
+    Subroutine* addInstruction(Instruction* instruction);
 
-    bool isFixed () {
-        return fixedOffset.has_value();
-    }
+    Subroutine* setOffset(Address address);
 
-    size_t getOffset () const {
-        return fixedOffset.value();
-    }
+    bool isFixed ();
 
-    size_t size () {
-        size_t size;
-        for (const auto & instruciton : instructions) {
-            size += instruciton->size();
-        }
-        return size;
-    }
+    size_t getOffset () const;
 
-    void generate(byte * output) {
-        size_t position = 0;
-        for (const auto & instruciton : instructions) {
-            instruciton->generate(&output[position]);
-            position += instruciton->size();
-        }
-    }
+    size_t size ();
+
+    void generate(byte * output);
 };
 
 #endif //VALENTINEASSEMBLER_SUBROUTINE_HPP

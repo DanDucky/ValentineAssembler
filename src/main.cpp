@@ -29,11 +29,9 @@ int main() {
         vals(BRA)
     };
     auto element = parser.find("BRA");
-    Instruction* yorp;
     if (element != parser.end()) {
-        yorp = element->second("BRA nyorm");
+        origin.addInstruction(element->second("BRA nyorm"));
     }
-    delete yorp;
 
     for (auto& instruction: lines) {
 //        instruction->generate();

@@ -2,8 +2,12 @@
 #define VALENTINEASSEMBLER_MOV_HPP
 
 #include "Instruction.hpp"
+#include "../parsing/Register.hpp"
 
 class MOV extends public Instruction {
+private:
+    Register from;
+    Register to;
 public:
 
     constructor(MOV);
