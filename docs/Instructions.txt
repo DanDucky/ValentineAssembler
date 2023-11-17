@@ -1,0 +1,94 @@
+Based off of 6502 instruction set: https://www.masswerk.at/6502/6502_instruction_set.html#PHP
+
+Only using required instructions, focus on software more than hardware.
+
+Required registers:
+X
+Y
+Accumulator
+Address (2x8 registers)
+Status Flags
+Page
+Stack Ptr
+
+BRANCH:
+Branch on _ (where _ is the status flag)
+requires either an offset or an exact address to go to
+
+Concept:
+First byte describes what instruction, how many bytes follow (1 or 2 depending on size of offset)
+Second/Third bytes describe offset OR exact location
+
+This is required for the branch instruction, branching is something that NEEDS a hardware instruction
+
+JUMP:
+Jump to _ (where _ is an address)
+
+Concept:
+First byte describes instruction and page offset if applicable (maybe have a form of the instruction with page offset here and another with a separate page byte?)
+Second/Third includes address and page in that order.
+Instruction loaded on clock 0.0
+Instruction parsed and values saved on clock 1.0
+	If page offset is in byte, load page offset into an internal register and save current page number
+	If no page offset, save only address
+	If both offset, save both address and ... another idea below
+Next byte loaded on clock 0.1
+	If page offset was in initial byte, save the sum of this + the saved address register
+	If no page offset, do same as above
+	If both offset do same as above (both offset is same as saying "just take the next bytes and input them, don't add/subtract") but instead of taking sum, just save the value
+Move saved sum or value into address register 1.1 (THIS IS WHERE ALL PATHS EXCEPT FULL REGISTER CHANGE WITHOUT ADD/SUBTRACT STOP)
+	If we still need next byte, do not do this, just skip this instruction
+Next byte loaded on 0.2
+	Save this byte
+Load both bytes into address and page on 1.2 // NO BAD REGERT THIS
+Instruction over
+
+Concept 2:
+This calls a macro which actually just saves each part of the address, then calls ADD instructions to manually offset, then has another (more custom) instruction to set X and Y to be the new address value.
+This could work, but I also see there being issues with interrupts as well as not being able to return values because registers are being used just to jump.
+Plus: if we already have the hardware to do BRANCH in one instruction, why not re-use this hardware for JUMP?
+
+Some sort of ADD
+^
+| both of these need a "with carry" option :)
+v
+Some sort of SUBTRACT
+
+Binary operations (and or xor etc)
+
+Boolean operations (set bool flag)
+
+Load (X Y ACC STATUS) from stack ptr
+
+Load (X Y ACC STATUS) from next PC location
+
+Store stack ptr value to (X Y) // this just sounds like a mov instruction
+
+MOVE any register to any register (THIS SHOULD NOT EFFECT ANY SORT OF PROGRAM COUNTER)
+
+EXPLANATION ON HOW TO STORE SOMETHING IN MEMORY:
+
+
+// Arithmetic (input from x or y output to acc)
+BOR // bitwise or
+AND // bitwise and
+XOR // bitwise xor
+NOT // bitwise not
+ADD (carry flag s/r)
+SUB (carry flag s/r)
+ASL // shift
+ASR // shift right
+ROL // rotate
+ROR // rotate right
+
+JMP // jump to address
+BRA // branch on selected status bit
+LOD // pull value from rom to register
+PUL // pull value from memory to register
+STR // store value in register to stackptr location
+MOV // move any register to any other register
+MOX // move X and Y into PC without disturbing runtime [maybe unnecessary]
+
+// IO with external devices
+PSH // push register to bus and open bus for one cycle
+POL // move bus value to register

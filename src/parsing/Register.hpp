@@ -17,23 +17,24 @@ enum RegisterID {
     FLAGS
 };
 
-#define vals( instruction ) {#instruction, instruction}
+#define reg( instruction ) {#instruction, instruction}
 
 const static std::map<std::string, RegisterID> lookup {
-        vals(X),
-        vals(Y),
-        vals(ACC),
-        vals(PC1),
-        vals(PC2),
-        vals(STACK1),
-        vals(STACK2),
-        vals(FLAGS)
+        reg(X),
+        reg(Y),
+        reg(ACC),
+        reg(PC1),
+        reg(PC2),
+        reg(STACK1),
+        reg(STACK2),
+        reg(FLAGS)
 };
 
 class Register {
 private:
-    const uint8_t reg;
+    uint8_t regID;
 public:
+    Register()=default;
     explicit Register(const std::string& regName);
 };
 

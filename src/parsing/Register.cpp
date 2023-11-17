@@ -1,3 +1,3 @@
 #include "Register.hpp"
 
-Register::Register(const std::string &regName) : reg(lookup.find(regName)->second) {}
+Register::Register(const std::string &regName) : regID(lookup.find(regName)->second) {}

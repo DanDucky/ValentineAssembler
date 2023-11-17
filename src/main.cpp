@@ -7,6 +7,7 @@
 #include "instructions/Instruction.hpp"
 #include "instructions/InstructionLibrary.hpp"
 #include "parsing/Subroutine.hpp"
+#include "util/ByteBuilder.hpp"
 
 #define vals( instruction ) {#instruction, {&Instruction::factory<instruction>}}
 
@@ -20,13 +21,22 @@ void freeInstructions(std::vector<Instruction*>& instructions) {
 
 int main() {
 
+    ByteBuilder<4> test;
+    cout << test.getBlock() << "\n";
+    test += {0b101, 3};
+    cout << test.getBlock() << "\n";
+    test += {7, 3};
+    cout << test.getBlock() << "\n";
+    test += {7, 2};
+    cout << test.getBlock() << "\n";
+
     vector<Subroutine> lines {};
     Subroutine origin = Subroutine({0,0});
     Subroutine interrupt = Subroutine({1,0});
 
     const std::map<string, function<Instruction*(std::string)>> parser = {
-        vals(MOV),
-        vals(BRA)
+            vals(MOV),
+            vals(BRA)
     };
     auto element = parser.find("BRA");
     if (element != parser.end()) {

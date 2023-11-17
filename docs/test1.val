@@ -1,0 +1,52 @@
+; this is a comment
+
+;^ <- status flag name
+BRA ^CRY #x // where x is defined with &
+
+;% <- compiled register value
+;ex:
+MOV %ACC %X
+
+;$ <- compiled number
+;ex:
+STOR %ACC $69
+
+;! <- binary value as number
+;ex:
+STOR %ACC !00100010 ; must be 8 bits
+
+;& <- save address as macro
+
+;# <- subroutine address
+;ex:
+JMP #yobro
+
+;. <- declare subroutine
+.yobro
+RTS
+
+;> <- compiler instruction (starting addresses)
+>BEGIN=0
+
+;@ <- override subroutine
+@interrupt
+JMP #interrupt
+
+;/ <- macro
+/ADDRESSOFSTACK=29
+
+;\ <- use macro
+JMP $\ADDRESSOFSTACK ---> JMP $29
+
+;POSSIBLE EXAMPLE FILE:
+;================================
+
+>INCLUDE=STDMACRO
+>BEGIN=0
+>INTERRUPT={1,0} ; 1st page, 0th address
+
+.initscreen
+\RTS
+
+@begin ; overriding this is saying this is where the program begins {0, 1}
+STR %ACC %0
