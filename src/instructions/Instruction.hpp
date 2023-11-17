@@ -11,6 +11,7 @@ typedef std::uint8_t byte;
 #define extends :
 #define constructor(instruction)                    \
     explicit instruction (std::string line)
+#define destructor(instruction) ~instruction() = default
 
 class Instruction {
 protected:

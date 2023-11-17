@@ -11,6 +11,7 @@ private:
 public:
 
     constructor(MOV);
+    destructor(MOV);
 
     void generate(byte* binary) override;
 };

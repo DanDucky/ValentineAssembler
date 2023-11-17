@@ -29,6 +29,8 @@ int main() {
     cout << test.getBlock() << "\n";
     test += {7, 2};
     cout << test.getBlock() << "\n";
+    test += {7, 3};
+    cout << test.getBlock() << "\n";
 
     vector<Subroutine> lines {};
     Subroutine origin = Subroutine({0,0});

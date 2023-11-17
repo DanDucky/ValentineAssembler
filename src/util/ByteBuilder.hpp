@@ -57,7 +57,7 @@ public:
                     bit += set.size;
                 }
             } else {
-                block.block[bit / 8] |= set.value & (byte) std::pow(2, set.size) - 1;
+                block.block[bit / 8] |= set.value & (((byte) std::pow(2, set.size) - 1));
                 if (multiByte && i == 0) {
                     bit += rem;
                 } else {
