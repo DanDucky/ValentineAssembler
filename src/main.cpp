@@ -7,30 +7,13 @@
 #include "instructions/Instruction.hpp"
 #include "instructions/InstructionLibrary.hpp"
 #include "parsing/Subroutine.hpp"
-#include "util/ByteBuilder.hpp"
+#include "util/templates/ByteBuilder.hpp"
 
 #define vals( instruction ) {#instruction, {&Instruction::factory<instruction>}}
 
 using namespace std;
 
-void freeInstructions(std::vector<Instruction*>& instructions) {
-    for (Instruction* element : instructions) {
-        delete element;
-    }
-}
-
 int main() {
-
-    ByteBuilder<4> test;
-    cout << test.getBlock() << "\n";
-    test += {0b101, 3};
-    cout << test.getBlock() << "\n";
-    test += {7, 3};
-    cout << test.getBlock() << "\n";
-    test += {7, 2};
-    cout << test.getBlock() << "\n";
-    test += {7, 3};
-    cout << test.getBlock() << "\n";
 
     vector<Subroutine> lines {};
     Subroutine origin = Subroutine({0,0});

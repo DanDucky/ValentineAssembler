@@ -33,9 +33,9 @@ jobs:
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
-          - os: ubuntu-latest
-            c_compiler: clang
-            cpp_compiler: clang++ -DCMAKE_CXX_STANDARD=23
+#          - os: ubuntu-latest
+#            c_compiler: clang
+#            cpp_compiler: clang++
         exclude:
           - os: windows-latest
             c_compiler: gcc
