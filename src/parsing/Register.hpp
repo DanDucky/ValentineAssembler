@@ -34,6 +34,7 @@ class Register {
 private:
     uint8_t regID;
 public:
+    uint8_t getIndex() const;
     Register()=default;
     explicit Register(const std::string& regName);
 };

@@ -2,16 +2,16 @@
 
 void Subroutine::generate(byte *output) {
     size_t position = 0;
-    for (const auto & instruciton : instructions) {
-        instruciton->generate(&output[position]);
-        position += instruciton->size();
+    for (const auto & instruction : instructions) {
+        instruction->generate(&output[position]);
+        position += instruction->size();
     }
 }
 
 size_t Subroutine::size() {
-    size_t size;
-    for (const auto & instruciton : instructions) {
-        size += instruciton->size();
+    size_t size = 0;
+    for (const auto & instruction : instructions) {
+        size += instruction->size();
     }
     return size;
 }
