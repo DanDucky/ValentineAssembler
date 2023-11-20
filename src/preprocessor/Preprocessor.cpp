@@ -12,10 +12,7 @@ void Preprocessor::stripComments(std::string &str) {
 }
 
 void Preprocessor::removeWhitespace(std::string &str) {
-    auto pos = str.find_first_not_of(' ');
-    if (pos != 0 && pos != std::string::npos) {
-        str = str.substr(pos);
-    }
+    std::erase(str, ' ');
 }
 
 InstructionType Preprocessor::processLine(std::string &line) {

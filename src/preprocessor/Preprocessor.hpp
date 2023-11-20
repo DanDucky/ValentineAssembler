@@ -19,6 +19,7 @@ private:
     static InstructionType getType (std::string& str);
     void addMacro(std::string macro, std::string alias);
 public:
+    Preprocessor()=default;
     InstructionType processLine (std::string& line);
 };
 

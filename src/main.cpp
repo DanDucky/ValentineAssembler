@@ -9,6 +9,7 @@
 #include "parsing/Subroutine.hpp"
 #include "util/templates/ByteBuilder.hpp"
 #include "parsing/Parser.hpp"
+#include "preprocessor/Preprocessor.hpp"
 
 #define vals( instruction ) {#instruction, {&Instruction::factory<instruction>}}
 
@@ -25,7 +26,11 @@ int main() {
     };
     auto element = parser.find("MOV");
     if (element != parser.end()) {
-        origin.addInstruction(element->second("MOV%STACK1%STACK2"));
+        Preprocessor processor;
+        string yobro = "  MOV  %  STACK1  %  STACK2   ";
+        if (processor.processLine(yobro) == PROGRAM) {
+            origin.addInstruction(element->second(yobro));
+        }
     }
     uint8_t yobro[origin.size()];
     origin.generate(yobro);
