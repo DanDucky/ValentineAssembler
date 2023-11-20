@@ -23,7 +23,7 @@ JMP #yobro
 
 ;. <- declare subroutine
 .yobro
-RTS
+\RTS
 
 ;> <- compiler instruction (starting addresses)
 >BEGIN=0

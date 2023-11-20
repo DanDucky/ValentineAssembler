@@ -19,14 +19,38 @@ InstructionType Preprocessor::processLine(std::string &line) {
     stripComments(line);
     removeWhitespace(line);
 
-    if (getType(line) == PREPROCESSOR) {
-        return PREPROCESSOR;
+    InstructionType type = getType(line);
+    switch(type) {
+        case PREPROCESSOR: {
+            const auto middle = &line[line.find('=')];
+            addMacro(std::string(&line[1], middle), std::string(middle + 1, &line[line.size()]));
+        }
+            break;
+        case PROGRAM: {
+            if (line[0] == '\\') {
+                replaceMacros(line);
+            }
+        }
+            break;
+        default: {
+
+        }
+            break;
     }
 
-    return PROGRAM;
+    return type;
 }
 
 InstructionType Preprocessor::getType(std::string &str) {
     return str[0] == '/' ? PREPROCESSOR : PROGRAM;
+}
+
+void Preprocessor::replaceMacros(std::string& line) { // only full line macros for now
+    const auto macro = macros.find(std::string(&line[1], &line[line.size()]));
+    if (macro != macros.end()) { // if it exists
+        line = macro->second;
+    } else {
+    // TODO error for macro not found
+    }
 }
 

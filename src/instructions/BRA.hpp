@@ -1,7 +1,7 @@
 #ifndef VALENTINEASSEMBLER_BRA_HPP
 #define VALENTINEASSEMBLER_BRA_HPP
 
-#include "Instruction.hpp"
+#include "include/Instruction.hpp"
 
 class BRA extends public Instruction {
 public:

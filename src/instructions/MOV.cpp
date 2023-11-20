@@ -1,8 +1,8 @@
 #include "MOV.hpp"
 #include "../util/templates/ByteBuilder.hpp"
 
-MOV::MOV(std::string line) : Instruction(line, MOV_SIZE) {
-    std::vector<std::string> registers = Parser::splitAfter(line, REGISTER_PREFIX);
+MOV::MOV(std::string line) : Instruction(&line, MOV_SIZE) {
+    std::vector<std::string> registers = Parser::splitByPrefixes(line);
     to = Register(registers[0]);
     from = Register(registers[1]);
 }

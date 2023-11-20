@@ -1,7 +1,7 @@
 #ifndef VALENTINEASSEMBLER_MOV_HPP
 #define VALENTINEASSEMBLER_MOV_HPP
 
-#include "Instruction.hpp"
+#include "include/Instruction.hpp"
 #include "../parsing/Register.hpp"
 
 class MOV extends public Instruction {

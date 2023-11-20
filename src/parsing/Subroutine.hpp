@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <optional>
-#include "../instructions/Instruction.hpp"
+#include "../instructions/include/Instruction.hpp"
 #include "../util/Address.hpp"
 
 class Subroutine {
