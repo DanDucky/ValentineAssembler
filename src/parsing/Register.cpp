@@ -5,3 +5,7 @@ Register::Register(const std::string &regName) : regID(lookup.find(regName)->sec
 uint8_t Register::getIndex() const {
     return regID;
 }
+
+Register::operator Bits() {
+    return {regID, 3};
+}

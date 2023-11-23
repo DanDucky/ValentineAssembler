@@ -24,16 +24,17 @@ int main() {
 
     const std::map<string, function<Instruction*(std::string)>> parser = {
             vals(MOV),
-            vals(BRA)
+            vals(BRA),
+            vals(LOD)
     };
     Preprocessor processor;
-    string tone = "/MOVER  =  MOV  %  STACK1  %  STACK2   ";
+    string tone = "/MOVER  =  LOD  %  STACK1  $!00001111   ";
     processor.processLine(tone);
     string preTest = "\\MOVER";
     processor.processLine(preTest);
     auto element = parser.find(string(&preTest[0], &preTest[3]));
     if (element != parser.end()) {
-        origin.addInstruction(element->second(tone));
+        origin.addInstruction(element->second(preTest));
     }
     uint8_t yobro[origin.size()];
     origin.generate(yobro);

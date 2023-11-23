@@ -11,6 +11,7 @@
 #include "../../parsing/Parser.hpp"
 #include "../settings/opcodes.hpp"
 #include "../settings/sizes.hpp"
+#include "../../util/templates/ByteBuilder.hpp"
 
 typedef std::uint8_t byte;
 

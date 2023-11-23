@@ -5,6 +5,8 @@
 #include <string>
 #include <map>
 
+#include "../util/templates/ByteBuilder.hpp"
+
 // REGISTER MAP!!!!
 enum RegisterID {
     X,
@@ -37,6 +39,7 @@ public:
     uint8_t getIndex() const;
     Register()=default;
     explicit Register(const std::string& regName);
+    operator Bits();
 };
 
 #endif //VALENTINEASSEMBLER_REGISTER_HPP

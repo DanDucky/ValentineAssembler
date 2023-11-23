@@ -3,5 +3,6 @@
 
 #include "../BRA.hpp"
 #include "../MOV.hpp"
+#include "../LOD.hpp"
 
 #endif //VALENTINEASSEMBLER_INSTRUCTIONLIBRARY_HPP

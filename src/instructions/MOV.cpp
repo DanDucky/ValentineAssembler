@@ -1,5 +1,4 @@
 #include "MOV.hpp"
-#include "../util/templates/ByteBuilder.hpp"
 
 MOV::MOV(std::string line) : Instruction(&line, MOV_SIZE) {
     std::vector<std::string> registers = Parser::splitByPrefixes(line);
@@ -10,7 +9,7 @@ MOV::MOV(std::string line) : Instruction(&line, MOV_SIZE) {
 void MOV::generate(byte * binary) {
     ByteBuilder<MOV_SIZE> builder;
     builder += MOV_OPCODE;
-    builder += {from.getIndex(), 3};
-    builder += {to.getIndex(), 3};
+    builder += from;
+    builder += to;
     builder.get(binary);
 }

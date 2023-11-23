@@ -19,6 +19,7 @@ private:
     static InstructionType getType (std::string& str);
     void addMacro(std::string macro, std::string alias);
     void replaceMacros(std::string& line);
+    static void replaceBinary(std::string& line);
 public:
     Preprocessor()=default;
     InstructionType processLine (std::string& line);

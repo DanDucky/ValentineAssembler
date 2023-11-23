@@ -16,7 +16,7 @@
 // program  SIZE
 #define BRA_SIZE
 #define JMP_SIZE
-#define LOD_SIZE
+#define LOD_SIZE 2
 
 // memory   SIZE
 #define STR_SIZE

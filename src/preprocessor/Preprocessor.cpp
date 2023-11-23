@@ -1,4 +1,6 @@
 #include "Preprocessor.hpp"
+#include <algorithm>
+#include <cstdint>
 
 void Preprocessor::addMacro(std::string macro, std::string alias) {
     macros.insert({macro, alias});
@@ -30,6 +32,7 @@ InstructionType Preprocessor::processLine(std::string &line) {
             if (line[0] == '\\') {
                 replaceMacros(line);
             }
+            replaceBinary(line);
         }
             break;
         default: {
@@ -51,6 +54,24 @@ void Preprocessor::replaceMacros(std::string& line) { // only full line macros f
         line = macro->second;
     } else {
     // TODO error for macro not found
+    }
+}
+
+void Preprocessor::replaceBinary(std::string &line) {
+    auto toByte = [] (const char * str) -> uint8_t { // string representing a byte to a byte
+        uint8_t out = 0;
+        for (short i = 7; i > -1; i--) {
+            out |= (str[i] == '0' ? 0 : 1) << (7 - i);
+        }
+        return out;
+    };
+
+    auto lastIndex = line.find('!');
+    auto const count = std::ranges::count(line, '!');
+    for (unsigned int i = 0; i < count; i++) {
+        line.insert(lastIndex + 9, std::to_string(toByte(&line[lastIndex + 1])));
+        line.erase(lastIndex, 9);
+        lastIndex = line.find('!');
     }
 }
 
