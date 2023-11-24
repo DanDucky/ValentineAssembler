@@ -19,7 +19,6 @@ std::vector<std::string> Parser::splitByPrefixes(std::string &in) {
         const auto next = findNextPrefix(in, lastIndex+1);
         out.emplace_back(&in[lastIndex + 1], &in[next != std::string::npos ? next : in.size()]);
         lastIndex = next;
-        cout << out.back() << "\n";
     }
     return out;
 }

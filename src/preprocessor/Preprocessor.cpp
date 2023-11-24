@@ -1,4 +1,5 @@
 #include "Preprocessor.hpp"
+#include "../parsing/Parser.hpp"
 #include <algorithm>
 #include <cstdint>
 
@@ -33,6 +34,7 @@ InstructionType Preprocessor::processLine(std::string &line) {
                 replaceMacros(line);
             }
             replaceBinary(line);
+            registerAddresses(line);
         }
             break;
         default: {
@@ -45,6 +47,9 @@ InstructionType Preprocessor::processLine(std::string &line) {
 }
 
 InstructionType Preprocessor::getType(std::string &str) {
+    if (std::find(prefixes.begin(), prefixes.end(), str[0]) == prefixes.end()) { // if the string begins with another prefix
+        // TODO throw some error about it not being a valid command
+    }
     return str[0] == '/' ? PREPROCESSOR : PROGRAM;
 }
 
@@ -57,7 +62,7 @@ void Preprocessor::replaceMacros(std::string& line) { // only full line macros f
     }
 }
 
-void Preprocessor::replaceBinary(std::string &line) {
+void Preprocessor::replaceBinary(std::string &str) {
     auto toByte = [] (const char * str) -> uint8_t { // string representing a byte to a byte
         uint8_t out = 0;
         for (short i = 7; i > -1; i--) {
@@ -66,12 +71,22 @@ void Preprocessor::replaceBinary(std::string &line) {
         return out;
     };
 
-    auto lastIndex = line.find('!');
-    auto const count = std::ranges::count(line, '!');
+    auto lastIndex = str.find('!');
+    auto const count = std::ranges::count(str, '!');
     for (unsigned int i = 0; i < count; i++) {
-        line.insert(lastIndex + 9, std::to_string(toByte(&line[lastIndex + 1])));
-        line.erase(lastIndex, 9);
-        lastIndex = line.find('!');
+        str.insert(lastIndex + 9, std::to_string(toByte(&str[lastIndex + 1])));
+        str.erase(lastIndex, 9);
+        lastIndex = str.find('!');
     }
+}
+
+Preprocessor::Preprocessor(std::map<std::string, std::optional<Address>> *addresses) {
+    this->addresses = addresses;
+}
+
+void Preprocessor::registerAddresses(std::string &line) {
+    if (!line.contains('&')) return;
+    const auto lastIndex = line.find('&');
+    addresses->insert({line.substr(lastIndex + 1), std::optional<Address>()});
 }
 
