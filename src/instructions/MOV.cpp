@@ -1,9 +1,9 @@
 #include "MOV.hpp"
 
-MOV::MOV(std::string line) : Instruction(&line, MOV_SIZE) {
-    std::vector<std::string> registers = Parser::splitByPrefixes(line);
-    to = Register(registers[0]);
-    from = Register(registers[1]);
+MOV::MOV(std::vector<Parameter *> parameters) : Instruction(MOV_SIZE),
+    to(paramAs(0, Register)),
+    from(paramAs(1, Register)) {
+
 }
 
 void MOV::generate(byte * binary) {

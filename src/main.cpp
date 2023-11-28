@@ -4,29 +4,23 @@
 #include <map>
 #include <functional>
 #include <chrono>
+#include <fstream>
 
 #include "instructions/include/Instruction.hpp"
 #include "instructions/include/InstructionLibrary.hpp"
-#include "parsing/Subroutine.hpp"
+#include "util/Subroutine.hpp"
 #include "util/templates/ByteBuilder.hpp"
 #include "preprocessor/Preprocessor.hpp"
-
-#define vals( instruction ) {#instruction, {&Instruction::factory<instruction>}}
+#include "util/Program.hpp"
 
 using namespace std;
 
 int main() {
     auto a = std::chrono::high_resolution_clock::now();
 
-    vector<Subroutine> lines {};
-    Subroutine origin = Subroutine({0,0});
-    Subroutine interrupt = Subroutine({1,0});
-
-    const std::map<string, function<Instruction*(std::string)>> parser = {
-            vals(MOV),
-            vals(BRA),
-            vals(LOD)
-    };
+    Program program(parser); // from InstructionLibrary.hpp
+    ifstream file = std::ifstream("/home/danducky/Programming/C++/ValentineAssembler/docs/test/basic.val");
+    program.process(file);
 //    Preprocessor processor;
 //    string tone = "/MOVER  =  LOD  %  STACK1  $!00001111   ";
 //    processor.processLine(tone);

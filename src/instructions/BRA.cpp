@@ -2,9 +2,9 @@
 
 #include <utility>
 
-BRA::BRA(std::string line) : Instruction(&line, 2) {
-}
-
 void BRA::generate(byte * binary) {
 
+}
+
+BRA::BRA(std::vector<Parameter *> parameters) : Instruction(BRA_SIZE) {
 }

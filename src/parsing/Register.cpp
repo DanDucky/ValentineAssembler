@@ -1,11 +1,7 @@
 #include "Register.hpp"
 
-Register::Register(const std::string &regName) : regID(lookup.find(regName)->second) {}
+Register::Register(std::string &parameter) : regID(lookup.find(parameter)->second) {}
 
-uint8_t Register::getIndex() const {
-    return regID;
-}
-
-Register::operator Bits() {
+const Bits Register::getBits() {
     return {regID, 3};
 }

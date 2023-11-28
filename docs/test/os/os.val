@@ -1,0 +1,10 @@
+/BEGIN=0
+/INTERRUPT=256
+
+>INCLUDE=malloc.val
+
+.origin
+; initialize all memory areas
+JMP #initmalloc
+
+.interrupt

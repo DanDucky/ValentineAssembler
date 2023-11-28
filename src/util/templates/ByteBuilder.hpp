@@ -41,12 +41,12 @@ public:
     }
 
     void nextByte();
-    void operator+= (byte bit_);
+    void operator+= (const byte bit_);
     void operator+= (const Bits& set);
 };
 
 template<std::size_t SIZE>
-void ByteBuilder<SIZE>::operator+=(byte bit_) {
+void ByteBuilder<SIZE>::operator+=(const byte bit_) {
     this->bit += bit_;
 }
 

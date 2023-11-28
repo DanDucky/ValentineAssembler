@@ -14,7 +14,7 @@
 #define ROR_SIZE
 
 // program  SIZE
-#define BRA_SIZE
+#define BRA_SIZE 3
 #define JMP_SIZE
 #define LOD_SIZE 2
 

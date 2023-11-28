@@ -5,21 +5,26 @@
 #include <optional>
 #include <string>
 #include <functional>
+#include <fstream>
 
 #include "Address.hpp"
 #include "../instructions/include/Instruction.hpp"
-#include "../parsing/Subroutine.hpp"
+#include "Subroutine.hpp"
 #include "../preprocessor/Preprocessor.hpp"
+#include "../parsing/include/Parameter.hpp"
+
+typedef std::map<std::string, std::function<Instruction*(std::vector<Parameter*>)>> InstructionSet;
 
 class Program {
 private:
     std::map<std::string, std::optional<Address>> addresses {};
-    const std::map<std::string, std::function<Instruction*(std::string)>>* instructions;
+    const InstructionSet* instructions;
     std::vector<Subroutine> program;
 
     Preprocessor preprocessor;
 public:
-    Program(const std::map<std::string, std::function<Instruction*(std::string)>>& instructionSet);
+    explicit Program(const InstructionSet& instructionSet);
+    void process(std::ifstream& stream);
 };
 
 #endif //VALENTINEASSEMBLER_PROGRAM_HPP

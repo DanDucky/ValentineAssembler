@@ -6,6 +6,7 @@
 #include <map>
 
 #include "../util/templates/ByteBuilder.hpp"
+#include "include/Parameter.hpp"
 
 // REGISTER MAP!!!!
 enum RegisterID {
@@ -19,27 +20,27 @@ enum RegisterID {
     FLAGS
 };
 
-#define reg( instruction ) {#instruction, instruction}
+#define regVal( instruction ) {#instruction, instruction}
 
 const static std::map<std::string, RegisterID> lookup {
-        reg(X),
-        reg(Y),
-        reg(ACC),
-        reg(PC1),
-        reg(PC2),
-        reg(STACK1),
-        reg(STACK2),
-        reg(FLAGS)
+        regVal(X),
+        regVal(Y),
+        regVal(ACC),
+        regVal(PC1),
+        regVal(PC2),
+        regVal(STACK1),
+        regVal(STACK2),
+        regVal(FLAGS)
 };
 
-class Register {
+class Register extends public Parameter {
 private:
-    uint8_t regID;
+    byte regID;
 public:
-    uint8_t getIndex() const;
-    Register()=default;
-    explicit Register(const std::string& regName);
-    operator Bits();
+    paramConstructor(Register);
+    paramDestructor(Register);
+
+    const Bits getBits() override;
 };
 
 #endif //VALENTINEASSEMBLER_REGISTER_HPP

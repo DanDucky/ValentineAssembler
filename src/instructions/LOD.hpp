@@ -3,10 +3,11 @@
 
 #include "include/Instruction.hpp"
 #include "../parsing/Register.hpp"
+#include "../parsing/Value.hpp"
 
 class LOD extends public Instruction {
 private:
-    byte data;
+    Value data;
     Register reg;
 public:
 
