@@ -12,7 +12,7 @@
 
 class Parameter {
 public:
-    virtual const Bits getBits()=0;
+    virtual Bits getBits()=0;
     operator const Bits() {
         return getBits();
     };

@@ -15,7 +15,6 @@ enum InstructionType {
 class Preprocessor {
 private:
     std::map<std::string, std::string> macros {};
-    std::map<std::string, std::optional<Address>>* addresses {};
 
     static void stripComments (std::string& str);
     static void removeWhitespace (std::string& str);
@@ -23,9 +22,9 @@ private:
     static void replaceBinary(std::string& str);
     void addMacro(std::string macro, std::string alias);
     void replaceMacros(std::string& line);
-    void registerAddresses(std::string& line);
+    static void registerAddresses(std::string& line);
 public:
-    Preprocessor(std::map<std::string, std::optional<Address>>* addresses);
+    explicit Preprocessor()=default;
     InstructionType processLine (std::string& line);
 };
 

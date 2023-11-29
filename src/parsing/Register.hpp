@@ -40,7 +40,7 @@ public:
     paramConstructor(Register);
     paramDestructor(Register);
 
-    const Bits getBits() override;
+    Bits getBits() override;
 };
 
 #endif //VALENTINEASSEMBLER_REGISTER_HPP

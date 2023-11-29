@@ -6,7 +6,7 @@ void LOD::generate(byte *binary) {
     builder += reg;
     builder.nextByte();
     builder += data;
-    builder.get(binary);
+    builder.put(binary);
 }
 
 LOD::LOD(std::vector<Parameter*> parameters) : Instruction(LOD_SIZE),

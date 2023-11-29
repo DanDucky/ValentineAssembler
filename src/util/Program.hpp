@@ -17,12 +17,12 @@ typedef std::map<std::string, std::function<Instruction*(std::vector<Parameter*>
 
 class Program {
 private:
-    std::map<std::string, std::optional<Address>> addresses {};
     const InstructionSet* instructions;
     std::vector<Subroutine> program;
 
-    Preprocessor preprocessor;
+    const Preprocessor preprocessor;
 public:
+    static std::map<std::string, Address> addresses;
     explicit Program(const InstructionSet& instructionSet);
     void process(std::ifstream& stream);
 };

@@ -7,7 +7,7 @@ class Value extends public Parameter {
 private:
     byte value;
 public:
-    const Bits getBits() override;
+    Bits getBits() override;
 
     paramConstructor(Value);
     paramDestructor(Value);

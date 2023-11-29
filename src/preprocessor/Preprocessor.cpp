@@ -1,5 +1,6 @@
 #include "Preprocessor.hpp"
 #include "../parsing/Parser.hpp"
+#include "../util/Program.hpp"
 #include <algorithm>
 #include <cstdint>
 
@@ -80,13 +81,9 @@ void Preprocessor::replaceBinary(std::string &str) {
     }
 }
 
-Preprocessor::Preprocessor(std::map<std::string, std::optional<Address>> *addresses) {
-    this->addresses = addresses;
-}
-
 void Preprocessor::registerAddresses(std::string &line) {
     if (!line.contains('&')) return;
     const auto lastIndex = line.find('&');
-    addresses->insert({line.substr(lastIndex + 1), std::optional<Address>()});
+    Program::addresses.insert({line.substr(lastIndex + 1), Address{}});
 }
 

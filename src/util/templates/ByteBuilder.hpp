@@ -24,7 +24,7 @@ struct Block {
 };
 
 struct Bits {
-    const byte value;
+    const uint32_t value;
     const byte size;
 };
 
@@ -35,7 +35,7 @@ private:
     byte bit = 0;
 public:
     ByteBuilder()=default;
-    void get (byte* ptr);
+    void put (byte* ptr);
     std::string getBlock() {
         return block;
     }
@@ -87,7 +87,7 @@ void ByteBuilder<SIZE>::nextByte() {
 }
 
 template<std::size_t SIZE>
-void ByteBuilder<SIZE>::get(byte *ptr) {
+void ByteBuilder<SIZE>::put(byte *ptr) {
     std::memcpy(ptr, block.block, SIZE);
 }
 

@@ -2,8 +2,11 @@
 #define VALENTINEASSEMBLER_BRA_HPP
 
 #include "include/Instruction.hpp"
+#include "../parsing/Flag.hpp"
 
 class BRA extends public Instruction {
+private:
+    Flag branchFlag;
 public:
 
     constructor(BRA);

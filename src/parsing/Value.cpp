@@ -1,6 +1,6 @@
 #include "Value.hpp"
 
-const Bits Value::getBits() {
+Bits Value::getBits() {
     return {value, 8};
 }
 

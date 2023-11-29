@@ -17,9 +17,8 @@ static const std::vector<char> prefixes {
 };
 
 class Parser {
-private:
-    static size_t findNextPrefix(std::string& str, size_t start);
 public:
+    static size_t findNextPrefix(std::string& str, size_t start);
     static std::vector<std::string> splitByPrefixes(std::string& in);
 };
 
