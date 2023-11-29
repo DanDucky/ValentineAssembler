@@ -11,7 +11,7 @@
 #include "../instructions/include/Instruction.hpp"
 #include "Subroutine.hpp"
 #include "../preprocessor/Preprocessor.hpp"
-#include "../parsing/include/Parameter.hpp"
+#include "../parameters/include/Parameter.hpp"
 
 typedef std::map<std::string, std::function<Instruction*(std::vector<Parameter*>)>> InstructionSet;
 
@@ -20,7 +20,7 @@ private:
     const InstructionSet* instructions;
     std::vector<Subroutine> program;
 
-    const Preprocessor preprocessor;
+    Preprocessor preprocessor;
 public:
     static std::map<std::string, Address> addresses;
     explicit Program(const InstructionSet& instructionSet);

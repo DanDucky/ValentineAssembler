@@ -2,7 +2,7 @@
 #define VALENTINEASSEMBLER_MOV_HPP
 
 #include "include/Instruction.hpp"
-#include "../parsing/Register.hpp"
+#include "../parameters/Register.hpp"
 
 class MOV extends public Instruction {
 private:

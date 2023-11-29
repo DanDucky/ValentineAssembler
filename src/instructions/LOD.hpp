@@ -2,8 +2,8 @@
 #define VALENTINEASSEMBLER_LOD_HPP
 
 #include "include/Instruction.hpp"
-#include "../parsing/Register.hpp"
-#include "../parsing/Value.hpp"
+#include "../parameters/Register.hpp"
+#include "../parameters/Value.hpp"
 
 class LOD extends public Instruction {
 private:

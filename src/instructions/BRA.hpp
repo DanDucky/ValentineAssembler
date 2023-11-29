@@ -2,11 +2,13 @@
 #define VALENTINEASSEMBLER_BRA_HPP
 
 #include "include/Instruction.hpp"
-#include "../parsing/Flag.hpp"
+#include "../parameters/Flag.hpp"
+#include "../parameters/SubroutineAddress.hpp"
 
 class BRA extends public Instruction {
 private:
     Flag branchFlag;
+    SubroutineAddress address;
 public:
 
     constructor(BRA);
