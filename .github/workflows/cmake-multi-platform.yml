@@ -51,11 +51,11 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Install Clang
-      uses: egor-tensin/setup-clang@v1.4
-      with:
-        version: latest
-        platform: x64
-        cc: 1
+      if: runner.os == 'ubuntu-latest'
+      run: |
+        echo "installing clang 17"
+        apt-get install clang-17
+        clang-17 -v
 
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
