@@ -16,7 +16,7 @@
 using namespace std;
 
 int main() {
-    auto a = std::chrono::high_resolution_clock::now();
+//    auto a = std::chrono::high_resolution_clock::now();
 
     Program program(parser); // from InstructionLibrary.hpp
     ifstream file = std::ifstream("/home/danducky/Programming/C++/ValentineAssembler/docs/test/basic.val");
@@ -36,5 +36,5 @@ int main() {
 //        cout << std::bitset<8>(yobro[i]) << "\n";
 //    }
 //
-    cout << duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - a).count() << " μs\n";
+//    cout << duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - a).count() << " μs\n";
 }
