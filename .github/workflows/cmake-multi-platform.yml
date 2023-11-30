@@ -38,7 +38,7 @@ jobs:
           - os: ubuntu-latest
             c_compiler: clang
             cpp_compiler: clang++
-            cpp_flags: -std=c++23
+            cpp_flags: -std=gnu++2b
         exclude:
           - os: windows-latest
             c_compiler: gcc
