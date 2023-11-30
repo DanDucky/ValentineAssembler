@@ -54,8 +54,12 @@ jobs:
       if: matrix.c_compiler == 'clang'
       run: |
         echo "installing clang 17"
-        sudo apt-get install clang-17
+        sudo apt-get update 
+        sudo apt-get install clang
+        echo CLANG-17 OUTPUT
         clang-17 -v
+        echo DEFAULT CLANG OUTPUT
+        clang -v
 
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
