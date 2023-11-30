@@ -54,7 +54,7 @@ jobs:
       if: matrix.c_compiler == 'clang'
       run: |
         echo "installing clang 17"
-        apt-get install clang-17
+        sudo apt-get install clang-17
         clang-17 -v
 
     - name: Set reusable strings
