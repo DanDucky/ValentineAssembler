@@ -38,7 +38,7 @@ jobs:
           - os: ubuntu-latest
             c_compiler: clang
             cpp_compiler: clang++
-            cpp_flags: -std=gnu++2b
+            cpp_flags: -std=c++20
         exclude:
           - os: windows-latest
             c_compiler: gcc
@@ -50,12 +50,20 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Install Clang
+      uses: egor-tensin/setup-clang@v1.4
+      with:
+        version: latest
+        platform: x64
+        cc: 1
+
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
       id: strings
       shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+    
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
