@@ -5,6 +5,7 @@
 #include <map>
 #include <optional>
 #include <string>
+#include <queue>
 #include "../util/Address.hpp"
 
 enum InstructionType {
@@ -14,6 +15,7 @@ enum InstructionType {
 
 class Preprocessor {
 private:
+    std::queue<std::string>* insertions;
     std::map<std::string, std::string> macros {};
 
     static void stripComments (std::string& str);
@@ -24,7 +26,7 @@ private:
     void replaceMacros(std::string& line);
     static void registerAddresses(std::string& line);
 public:
-    explicit Preprocessor()=default;
+    explicit Preprocessor(std::queue<std::string>* insertions);
     InstructionType processLine (std::string& line);
 };
 

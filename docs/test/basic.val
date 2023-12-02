@@ -1,14 +1,10 @@
-/BEGIN=0
-/INTERRUPT={1,0} ; first page, 0th index
-
-.origin
-LOD %X $!00000001 ; load x with 1
+.origin:0
 LOD %Y $!00000001 ; load y with 1
+LOD %X $!00000001 ; load x with 1
 ADD &TOP ; add x and y
 MOV %ACC %X ; move output to the x register
 BRA ^CRY #WAIT ; if the addition operation carries then go to NOP at &WAIT
 JMP #TOP ; if it didn't branch then jump back to the add
-NOP &WAIT ; beginning of infinite wait loop
 JMP #WAIT ; jump back to top of infinite wait loop
 
-.interrupt
+.interrupt:1

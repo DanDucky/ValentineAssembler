@@ -23,7 +23,7 @@ InstructionType Preprocessor::processLine(std::string &line) {
     stripComments(line);
     removeWhitespace(line);
 
-    InstructionType type = getType(line);
+    const InstructionType type = getType(line);
     switch(type) {
         case PREPROCESSOR: {
             const auto middle = &line[line.find('=')];
@@ -48,9 +48,9 @@ InstructionType Preprocessor::processLine(std::string &line) {
 }
 
 InstructionType Preprocessor::getType(std::string &str) {
-    if (std::find(prefixes.begin(), prefixes.end(), str[0]) == prefixes.end()) { // if the string begins with another prefix
-        // TODO throw some error about it not being a valid command
-    }
+//    if (std::find(prefixes.begin(), prefixes.end(), str[0]) == prefixes.end()) { // if the string begins with another prefix
+//        // TODO throw some error about it not being a valid command
+//    }
     return str[0] == '/' ? PREPROCESSOR : PROGRAM;
 }
 
@@ -85,5 +85,9 @@ void Preprocessor::registerAddresses(std::string &line) {
     if (!line.contains('&')) return;
     const auto lastIndex = line.find('&');
     Program::addresses.insert({line.substr(lastIndex + 1), Address{}});
+}
+
+Preprocessor::Preprocessor(std::queue<std::string> *insertions) {
+    this->insertions = insertions;
 }
 

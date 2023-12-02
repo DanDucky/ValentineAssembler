@@ -6,7 +6,7 @@
 #define AND_SIZE
 #define XOR_SIZE
 #define NOT_SIZE
-#define ADD_SIZE
+#define ADD_SIZE 1
 #define SUB_SIZE
 #define ASL_SIZE
 #define ASR_SIZE

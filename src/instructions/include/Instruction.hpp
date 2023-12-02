@@ -5,14 +5,13 @@
 #include <string>
 #include <iostream>
 #include <utility>
-#include <concepts>
 #include <vector>
 
-#include "../../parsing/Parser.hpp"
+#include "../../parameters/include/Parameter.hpp"
 #include "../settings/opcodes.hpp"
 #include "../settings/sizes.hpp"
 #include "../../util/templates/ByteBuilder.hpp"
-#include "../../parameters/include/Parameter.hpp"
+#include "../../util/DerivedConcept.hpp"
 
 typedef std::uint8_t byte;
 
@@ -20,10 +19,7 @@ typedef std::uint8_t byte;
 #define constructor(instruction)                    \
     explicit instruction (std::vector<Parameter*> parameters)
 #define destructor(instruction) ~instruction() = default
-#define paramAs(index, type) dynamic_cast<type&>(*parameters[index])
-
-template<class Child, class Base>
-concept Derived = std::is_base_of<Base, Child>::value;
+#define paramAs(index, type) dynamic_cast<type&>(*(parameters[index]))
 
 class Instruction {
 protected:

@@ -6,6 +6,8 @@
 #include "../instructions/include/Instruction.hpp"
 #include "Address.hpp"
 
+#define SUBROUTINE_PREFIX '.'
+
 class Subroutine {
 private:
     std::vector<Instruction*> instructions;
