@@ -31,11 +31,11 @@ void Program::process(std::ifstream &stream) {
             } else {
                 const auto constructor = instructions->find(line.substr(0, 3));
                 if (constructor != instructions->end()) { // instruction exists
-                    const auto size = Parser::numberOfPrefixes(line);
+                    const size_t size = Parser::numberOfPrefixes(line);
                     Parameter* params[size];
                     Parser::splitByPrefixes(line, params, size);
                     currentSubroutine->addInstruction(constructor->second(&params[0]));
-                    for (const auto& param : params) {
+                    for (const Parameter* param : params) {
                         delete param;
                     }
                 }

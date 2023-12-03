@@ -28,7 +28,7 @@ static const ParameterTable parameterTable = {
 class Parser {
 public:
     static size_t findNextPrefix(std::string& str, size_t start);
-    static void splitByPrefixes(std::string &in, Parameter** out,const size_t size);
+    static void splitByPrefixes(std::string &in, Parameter** out, size_t size);
     static size_t numberOfPrefixes(std::string& str);
 };
 
