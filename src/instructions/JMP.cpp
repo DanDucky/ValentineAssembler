@@ -1,6 +1,6 @@
 #include "JMP.hpp"
 
-JMP::JMP(std::vector<Parameter *> parameters) : Instruction(JMP_SIZE),
+JMP::JMP(Parameter ** parameters) : Instruction(JMP_SIZE),
     address(paramAs(0, SubroutineAddress)) {
 }
 

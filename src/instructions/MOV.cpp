@@ -8,7 +8,7 @@ void MOV::generate(byte * binary) {
     builder.put(binary);
 }
 
-MOV::MOV(std::vector<Parameter *> parameters) : Instruction(MOV_SIZE),
+MOV::MOV(Parameter ** parameters) : Instruction(MOV_SIZE),
     to(paramAs(0, Register)),
     from(paramAs(1, Register)) {
 }

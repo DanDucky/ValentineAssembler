@@ -28,7 +28,8 @@ static const ParameterTable parameterTable = {
 class Parser {
 public:
     static size_t findNextPrefix(std::string& str, size_t start);
-    static std::vector<Parameter *> splitByPrefixes(std::string& in);
+    static void splitByPrefixes(std::string &in, Parameter** out,const size_t size);
+    static size_t numberOfPrefixes(std::string& str);
 };
 
 #endif //VALENTINEASSEMBLER_PARSER_HPP

@@ -14,8 +14,6 @@
 #include "../preprocessor/Preprocessor.hpp"
 #include "../parameters/include/Parameter.hpp"
 
-typedef std::map<std::string, std::function<Instruction*(std::vector<Parameter*>)>> InstructionSet;
-
 class Program {
 private:
     const InstructionSet* instructions;

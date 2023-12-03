@@ -17,7 +17,7 @@ typedef std::uint8_t byte;
 
 #define extends :
 #define constructor(instruction)                    \
-    explicit instruction (std::vector<Parameter*> parameters)
+    explicit instruction (Parameter** parameters)
 #define destructor(instruction) ~instruction() = default
 #define paramAs(index, type) dynamic_cast<type&>(*(parameters[index]))
 
@@ -33,8 +33,10 @@ public:
         return this->byteSize;
     }
 
+    virtual ~Instruction()=default;
+
     template<Derived<Instruction> t>
-    static Instruction* factory(std::vector<Parameter*> instruction) {
+    static Instruction* factory(Parameter** instruction) {
         return new t(instruction);
     }
 

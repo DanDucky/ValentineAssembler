@@ -1,6 +1,6 @@
 #include "ADD.hpp"
 
-ADD::ADD(std::vector<Parameter *> parameters) : Instruction(ADD_SIZE) {
+ADD::ADD(Parameter ** parameters) : Instruction(ADD_SIZE) {
 
 }
 

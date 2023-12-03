@@ -9,7 +9,7 @@ void BRA::generate(byte * binary) {
     builder.put(binary);
 }
 
-BRA::BRA(std::vector<Parameter *> parameters) : Instruction(BRA_SIZE),
+BRA::BRA(Parameter ** parameters) : Instruction(BRA_SIZE),
     branchFlag(paramAs(0, Flag)),
     address(paramAs(1, SubroutineAddress)) {
 }

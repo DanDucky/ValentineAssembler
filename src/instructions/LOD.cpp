@@ -9,7 +9,7 @@ void LOD::generate(byte *binary) {
     builder.put(binary);
 }
 
-LOD::LOD(std::vector<Parameter*> parameters) : Instruction(LOD_SIZE),
+LOD::LOD(Parameter** parameters) : Instruction(LOD_SIZE),
     reg(paramAs(0, Register)),
     data(paramAs(1, Value)) {
 }
