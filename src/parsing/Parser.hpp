@@ -14,6 +14,11 @@
 #define ADDRESS_PREFIX '#'
 #define FLAG_PREFIX '^'
 
+#define SEPARATOR ':'
+#define USE_MACRO_PREFIX '\\'
+#define DEFINE_MACRO_PREFIX '/'
+#define MULTI_LINE '\\'
+
 #define getParam(prefix, param) {prefix, {&Parameter::factory<param>}}
 
 typedef std::map<char, std::function<Parameter*(std::string&)>> ParameterTable;
@@ -30,6 +35,8 @@ public:
     static size_t findNextPrefix(std::string& str, size_t start);
     static void splitByPrefixes(std::string &in, Parameter** out, size_t size);
     static size_t numberOfPrefixes(std::string& str);
+    static Address fixedOffset(std::string& str);
+    static void split(const std::string &str, std::string *out, size_t splits, char ch);
 };
 
 #endif //VALENTINEASSEMBLER_PARSER_HPP

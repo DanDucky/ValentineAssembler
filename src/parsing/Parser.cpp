@@ -34,3 +34,17 @@ size_t Parser::numberOfPrefixes(string &str) {
 
     return std::ranges::count_if(str, prefix);
 }
+
+Address Parser::fixedOffset(string &str) {
+    const auto colon = str.find(SEPARATOR);
+    return {static_cast<size_t>(std::stoi(string(&str[colon + 1], &str.back() + 1))), 0};
+}
+
+void Parser::split(const string &str, std::string *out, size_t splits, char ch) {
+    unsigned long last = -1;
+    for (int i = 0; i < splits; i++) {
+        const auto next = str.find(ch, last + 1);
+        out[i] = std::string(&str[last + 1], &str[std::min(str.size(), next)]);
+        last = next;
+    }
+}

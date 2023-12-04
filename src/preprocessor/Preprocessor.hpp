@@ -13,6 +13,11 @@ enum InstructionType {
     PROGRAM
 };
 
+enum MacroType {
+    INLINE,
+    MULTI
+};
+
 class Preprocessor {
 private:
     std::queue<std::string>* insertions;
@@ -23,7 +28,7 @@ private:
     static InstructionType getType (std::string& str);
     static void replaceBinary(std::string& str);
     void addMacro(std::string macro, std::string alias);
-    void replaceMacros(std::string& line);
+    MacroType replaceMacros(std::string& line);
     static void registerAddresses(std::string& line);
 public:
     explicit Preprocessor(std::queue<std::string>* insertions);

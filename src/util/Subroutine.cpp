@@ -35,8 +35,8 @@ Subroutine *Subroutine::addInstruction(Instruction *instruction) {
 }
 
 Subroutine::~Subroutine() {
-    for (const auto & instruciton : instructions) {
-        delete instruciton;
+    for (const Instruction* instruction : instructions) {
+        delete instruction;
     }
 }
 

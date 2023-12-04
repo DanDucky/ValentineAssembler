@@ -1,7 +1,11 @@
+/INIT=LOD% Y $!00000001\LOD%X $!00000001
+/DECLTOP=&TOP
+
 .origin:0
-LOD %Y $!00000001 ; load y with 1
-LOD %X $!00000001 ; load x with 1
-ADD &TOP ; add x and y
+;LOD %Y $!00000001 ; load y with 1
+;LOD %X $!00000001 ; load x with 1
+\INIT
+ADD \DECLTOP ; add x and y
 MOV %ACC %X ; move output to the x register
 BRA ^CRY #WAIT ; if the addition operation carries then go to NOP at &WAIT
 JMP #TOP ; if it didn't branch then jump back to the add

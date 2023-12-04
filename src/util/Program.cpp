@@ -26,7 +26,7 @@ void Program::process(std::ifstream &stream) {
 
         if (preprocessor.processLine(line) == PROGRAM) {
             if (line.starts_with(SUBROUTINE_PREFIX)) { // new subroutine
-                currentSubroutine = new Subroutine();
+                currentSubroutine = (new Subroutine())->setOffset(Parser::fixedOffset(line));
                 program.push_back(currentSubroutine);
             } else {
                 const auto constructor = instructions->find(line.substr(0, 3));
@@ -35,8 +35,8 @@ void Program::process(std::ifstream &stream) {
                     Parameter* params[size];
                     Parser::splitByPrefixes(line, params, size);
                     currentSubroutine->addInstruction(constructor->second(&params[0]));
-                    for (const Parameter* param : params) {
-                        delete param;
+                    for (unsigned short i = 0; i < size; i++) { // bruh windows does NOT like range based for loops
+                        delete params[i]; // cringe
                     }
                 }
             }

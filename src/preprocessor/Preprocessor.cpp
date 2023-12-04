@@ -26,14 +26,14 @@ InstructionType Preprocessor::processLine(std::string &line) {
     const InstructionType type = getType(line);
     switch(type) {
         case PREPROCESSOR: {
-            const auto middle = &line[line.find('=')];
-            addMacro(std::string(&line[1], middle), std::string(middle + 1, &line[line.size()]));
+            if (line[0] == DEFINE_MACRO_PREFIX) {
+                const auto middle = &line[line.find('=')];
+                addMacro(std::string(&line[1], middle), std::string(middle + 1, &line[line.size()]));
+            }
         }
             break;
         case PROGRAM: {
-            if (line[0] == '\\') {
-                replaceMacros(line);
-            }
+            if (replaceMacros(line) == MULTI) return PREPROCESSOR;
             replaceBinary(line);
             registerAddresses(line);
         }
@@ -51,16 +51,45 @@ InstructionType Preprocessor::getType(std::string &str) {
 //    if (std::find(prefixes.begin(), prefixes.end(), str[0]) == prefixes.end()) { // if the string begins with another prefix
 //        // TODO throw some error about it not being a valid command
 //    }
-    return str[0] == '/' ? PREPROCESSOR : PROGRAM;
+    return str[0] == DEFINE_MACRO_PREFIX || str.empty() ? PREPROCESSOR : PROGRAM;
 }
 
-void Preprocessor::replaceMacros(std::string& line) { // only full line macros for now
-    const auto macro = macros.find(std::string(&line[1], &line[line.size()]));
-    if (macro != macros.end()) { // if it exists
-        line = macro->second;
-    } else {
-    // TODO error for macro not found
+MacroType Preprocessor::replaceMacros(std::string& line) {
+    const auto numberOfMacros = std::ranges::count(line, USE_MACRO_PREFIX);
+    if (numberOfMacros == 0) return INLINE;
+
+    std::string stringMacros[numberOfMacros];
+    auto last = line.find(USE_MACRO_PREFIX);
+
+    for (unsigned short i = 0; i < numberOfMacros; i++) {
+        const auto next = line.find(USE_MACRO_PREFIX, last + 1);
+        const auto nextPrefix = Parser::findNextPrefix(line, last + 1);
+        stringMacros[i] = std::string(&line[last + 1], &line[nextPrefix != std::string::npos ? nextPrefix : line.size()]);
+        last = next;
     }
+
+    if (numberOfMacros == 1 && line == USE_MACRO_PREFIX + stringMacros[0]) { // this means we are just replacing the whole line
+        const auto replaceWith = macros.find(stringMacros[0])->second;
+        const auto lineCount =std::ranges::count(line, MULTI_LINE) + 1;
+        std::string macroLines[lineCount];
+        Parser::split(replaceWith, macroLines, lineCount, MULTI_LINE);
+        for (unsigned short i = 0; i < lineCount; i++) {
+            insertions->push(macroLines[i]);
+        }
+        return MULTI;
+    }
+
+    last = line.find(USE_MACRO_PREFIX);
+    for (unsigned short i = 0; i < numberOfMacros; i++) {
+        const auto next = line.find(USE_MACRO_PREFIX, last + 1);
+
+        line.erase(last, stringMacros[i].size() + 1); // erase macro signature
+        line.insert(last, macros.find(stringMacros[i])->second);
+
+        last = next;
+    }
+    if (line.contains('\\')); // error, multi line macros present alongside other macros or other text todo
+    return INLINE;
 }
 
 void Preprocessor::replaceBinary(std::string &str) {

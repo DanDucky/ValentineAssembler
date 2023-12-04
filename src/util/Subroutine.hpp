@@ -13,7 +13,7 @@ private:
     std::vector<Instruction*> instructions;
     std::optional<size_t> fixedOffset;
 public:
-    Subroutine() {}
+    Subroutine()=default;
     explicit Subroutine (Address address);
     ~Subroutine();
 
