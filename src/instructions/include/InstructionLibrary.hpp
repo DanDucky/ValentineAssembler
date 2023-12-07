@@ -7,6 +7,7 @@
 #include "../LOD.hpp"
 #include "../JMP.hpp"
 #include "../ADD.hpp"
+#include "../CMP.hpp"
 
 #include <string>
 #include <functional>
@@ -20,7 +21,8 @@ static const InstructionSet parser = {
         vals(BRA),
         vals(LOD),
         vals(JMP),
-        vals(ADD)
+        vals(ADD),
+        vals(CMP)
 };
 
 #endif //VALENTINEASSEMBLER_INSTRUCTIONLIBRARY_HPP

@@ -11,7 +11,7 @@
 class Subroutine {
 private:
     std::vector<Instruction*> instructions;
-    std::optional<size_t> fixedOffset;
+    std::optional<Address> fixedOffset;
 public:
     Subroutine()=default;
     explicit Subroutine (Address address);
@@ -23,7 +23,7 @@ public:
 
     bool isFixed ();
 
-    size_t getOffset () const;
+    [[nodiscard]] Address getOffset () const;
 
     size_t size ();
 

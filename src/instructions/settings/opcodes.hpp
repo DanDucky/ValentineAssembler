@@ -12,6 +12,11 @@
 #define ASR_OPCODE {0b011110, 6}
 #define ROL_OPCODE {0b100010, 6}
 #define ROR_OPCODE {0b100110, 6}
+#define CMP_OPCODE {0b101010, 6}
+#define STP_OPCODE {0b101110, 6} // store program counter internal
+#define STS_OPCODE {0b110010, 6} // store stack ptr internal
+#define LDP_OPCODE {0b110110, 6} // load pc
+#define LDS_OPCODE {0b111010, 6} // load stackptr
 
 // program
 #define BRA_OPCODE {0b0001, 4}

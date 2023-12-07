@@ -9,7 +9,7 @@ void Preprocessor::addMacro(std::string macro, std::string alias) {
 }
 
 void Preprocessor::stripComments(std::string &str) {
-    const auto pos = str.find(';');
+    const auto pos = str.find(COMMENT_PREFIX);
     if (pos != std::string::npos) {
         str.resize(pos);
     }
@@ -39,9 +39,8 @@ InstructionType Preprocessor::processLine(std::string &line) {
         }
             break;
         default: {
-
+            // ermmmm what the scallop
         }
-            break;
     }
 
     return type;
@@ -56,7 +55,10 @@ InstructionType Preprocessor::getType(std::string &str) {
 
 MacroType Preprocessor::replaceMacros(std::string& line) {
     const auto numberOfMacros = std::ranges::count(line, USE_MACRO_PREFIX);
-    if (numberOfMacros == 0) return INLINE;
+
+    if (numberOfMacros == 0) { // maybe this will fix your lifetime complaint windows?
+        return INLINE;
+    }
 
     std::string stringMacros[numberOfMacros];
     auto last = line.find(USE_MACRO_PREFIX);
@@ -70,7 +72,7 @@ MacroType Preprocessor::replaceMacros(std::string& line) {
 
     if (numberOfMacros == 1 && line == USE_MACRO_PREFIX + stringMacros[0]) { // this means we are just replacing the whole line
         const auto replaceWith = macros.find(stringMacros[0])->second;
-        const auto lineCount =std::ranges::count(line, MULTI_LINE) + 1;
+        const auto lineCount = std::ranges::count(line, MULTI_LINE) + 1;
         std::string macroLines[lineCount];
         Parser::split(replaceWith, macroLines, lineCount, MULTI_LINE);
         for (unsigned short i = 0; i < lineCount; i++) {
@@ -88,7 +90,7 @@ MacroType Preprocessor::replaceMacros(std::string& line) {
 
         last = next;
     }
-    if (line.contains('\\')); // error, multi line macros present alongside other macros or other text todo
+    if (line.contains(MULTI_LINE)); // error, multi line macros present alongside other macros or other text todo
     return INLINE;
 }
 
@@ -101,18 +103,18 @@ void Preprocessor::replaceBinary(std::string &str) {
         return out;
     };
 
-    auto lastIndex = str.find('!');
-    auto const count = std::ranges::count(str, '!');
+    auto lastIndex = str.find(BINARY_PREFIX);
+    auto const count = std::ranges::count(str, BINARY_PREFIX);
     for (unsigned int i = 0; i < count; i++) {
         str.insert(lastIndex + 9, std::to_string(toByte(&str[lastIndex + 1])));
         str.erase(lastIndex, 9);
-        lastIndex = str.find('!');
+        lastIndex = str.find(BINARY_PREFIX);
     }
 }
 
 void Preprocessor::registerAddresses(std::string &line) {
-    if (!line.contains('&')) return;
-    const auto lastIndex = line.find('&');
+    if (!line.contains(GET_ADDRESS_PREFIX)) return;
+    const auto lastIndex = line.find(GET_ADDRESS_PREFIX);
     Program::addresses.insert({line.substr(lastIndex + 1), Address{}});
 }
 

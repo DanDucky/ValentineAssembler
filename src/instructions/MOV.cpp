@@ -9,6 +9,6 @@ void MOV::generate(byte * binary) {
 }
 
 MOV::MOV(Parameter ** parameters) : Instruction(MOV_SIZE),
-    to(paramAs(0, Register)),
-    from(paramAs(1, Register)) {
+    from(paramAs(0, Register)),
+    to(paramAs(1, Register)) {
 }

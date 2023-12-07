@@ -16,7 +16,7 @@ size_t Subroutine::size() {
     return size;
 }
 
-size_t Subroutine::getOffset() const {
+Address Subroutine::getOffset() const {
     return fixedOffset.value();
 }
 
@@ -25,7 +25,7 @@ bool Subroutine::isFixed() {
 }
 
 Subroutine *Subroutine::setOffset(Address address) {
-    fixedOffset = address;
+    this->fixedOffset = address;
     return this;
 }
 

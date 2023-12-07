@@ -80,6 +80,7 @@ ASL // shift
 ASR // shift right
 ROL // rotate
 ROR // rotate right
+CMP
 
 JMP // jump to address
 BRA // branch on selected status bit

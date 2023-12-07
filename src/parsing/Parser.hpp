@@ -18,6 +18,9 @@
 #define USE_MACRO_PREFIX '\\'
 #define DEFINE_MACRO_PREFIX '/'
 #define MULTI_LINE '\\'
+#define GET_ADDRESS_PREFIX '&'
+#define BINARY_PREFIX '!'
+#define COMMENT_PREFIX ';'
 
 #define getParam(prefix, param) {prefix, {&Parameter::factory<param>}}
 

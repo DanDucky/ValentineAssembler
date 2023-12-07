@@ -18,6 +18,7 @@ class Program {
 private:
     const InstructionSet* instructions;
     std::vector<Subroutine*> program;
+    std::vector<Subroutine*> fixedSubroutines;
     std::queue<std::string> insertions;
 
     Preprocessor preprocessor;
