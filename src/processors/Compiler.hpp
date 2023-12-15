@@ -1,5 +1,5 @@
-#ifndef VALENTINEASSEMBLER_PROGRAM_HPP
-#define VALENTINEASSEMBLER_PROGRAM_HPP
+#ifndef VALENTINEASSEMBLER_COMPILER_HPP
+#define VALENTINEASSEMBLER_COMPILER_HPP
 
 #include <map>
 #include <optional>
@@ -10,14 +10,14 @@
 #include <algorithm>
 #include <stack>
 
-#include "../parsing/Parser.hpp"
-#include "Address.hpp"
+#include "../util/Parser.hpp"
+#include "../util/Address.hpp"
 #include "../instructions/include/InstructionLibrary.hpp"
-#include "Subroutine.hpp"
-#include "../preprocessor/Preprocessor.hpp"
+#include "../util/Subroutine.hpp"
+#include "../processors/Preprocessor.hpp"
 #include "../parameters/include/Parameter.hpp"
 
-class Program {
+class Compiler {
 private:
     const InstructionSet* instructions;
     std::queue<std::string> insertions;
@@ -27,11 +27,11 @@ private:
     Preprocessor preprocessor;
 public:
     static std::map<std::string, Address> addresses;
-    explicit Program(const InstructionSet& instructionSet);
-    ~Program();
+    explicit Compiler(const InstructionSet& instructionSet);
+    ~Compiler();
     void process(std::ifstream& stream);
     size_t size ();
     void compile(byte* out);
 };
 
-#endif //VALENTINEASSEMBLER_PROGRAM_HPP
+#endif //VALENTINEASSEMBLER_COMPILER_HPP

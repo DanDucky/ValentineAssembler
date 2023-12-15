@@ -1,12 +1,12 @@
-#include "Program.hpp"
+#include "Compiler.hpp"
 
-std::map<std::string, Address> Program::addresses;
+std::map<std::string, Address> Compiler::addresses;
 
-Program::Program(const InstructionSet& instructionSet) : instructions(&instructionSet) , preprocessor(&insertions, &passedAddress) {
+Compiler::Compiler(const InstructionSet& instructionSet) : instructions(&instructionSet) , preprocessor(&insertions, &passedAddress) {
 
 }
 
-void Program::process(std::ifstream &stream) {
+void Compiler::process(std::ifstream &stream) {
     if (!stream.is_open()) return;
     std::string line;
     unsigned int lineNum = 0;
@@ -40,11 +40,11 @@ void Program::process(std::ifstream &stream) {
 
                 const std::string subroutineName = line.substr(1, line.find(SEPARATOR) - 1);
 
-                Program::addresses.insert({
+                Compiler::addresses.insert({
                     subroutineName,
                     {}
                 }); // remember to set this later!!!
-                passedAddress = &Program::addresses.find(subroutineName)->second;
+                passedAddress = &Compiler::addresses.find(subroutineName)->second;
             } else {
                 const auto constructor = instructions->find(line.substr(0, 3));
                 if (constructor != instructions->end()) { // instruction exists
@@ -152,13 +152,13 @@ void Program::process(std::ifstream &stream) {
     }
 }
 
-Program::~Program() {
+Compiler::~Compiler() {
     for (const auto& subroutine : processed) {
         delete subroutine;
     }
 }
 
-size_t Program::size() {
+size_t Compiler::size() {
     size_t size = 0;
     for (const auto& subroutine : processed) {
         size += subroutine->getOffset() - size;
@@ -167,7 +167,7 @@ size_t Program::size() {
     return size;
 }
 
-void Program::compile(byte *out) {
+void Compiler::compile(byte *out) {
     size_t size = 0;
     for (const auto& subroutine : processed) {
         size += subroutine->getOffset() - size;

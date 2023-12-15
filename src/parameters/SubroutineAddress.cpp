@@ -1,9 +1,9 @@
 #include "SubroutineAddress.hpp"
-#include "../util/Program.hpp"
+#include "../processors/Compiler.hpp"
 
 SubroutineAddress::SubroutineAddress(std::string &parameter) {
-    Program::addresses.insert({parameter, {}});
-    auto address = Program::addresses.find(parameter);
+    Compiler::addresses.insert({parameter, {}});
+    auto address = Compiler::addresses.find(parameter);
     refAddress = &address->second;
 }
 

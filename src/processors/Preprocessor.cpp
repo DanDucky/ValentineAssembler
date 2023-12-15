@@ -1,6 +1,6 @@
 #include "Preprocessor.hpp"
-#include "../parsing/Parser.hpp"
-#include "../util/Program.hpp"
+#include "../util/Parser.hpp"
+#include "Compiler.hpp"
 #include <algorithm>
 #include <cstdint>
 
@@ -116,8 +116,8 @@ void Preprocessor::registerAddresses(std::string &line) {
     if (!line.contains(GET_ADDRESS_PREFIX)) return;
     const auto lastIndex = line.find_last_of(GET_ADDRESS_PREFIX);
     const std::string addressName = line.substr(lastIndex + 1);
-    Program::addresses.insert({addressName, Address{}});
-    *setAddress = &Program::addresses.find(addressName)->second;
+    Compiler::addresses.insert({addressName, Address{}});
+    *setAddress = &Compiler::addresses.find(addressName)->second;
 }
 
 Preprocessor::Preprocessor(std::queue<std::string> *insertions, Address** address) {
