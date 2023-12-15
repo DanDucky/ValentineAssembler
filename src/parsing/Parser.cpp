@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void Parser::splitByPrefixes(std::string &in, Parameter** out,const size_t size) {
+void Parser::getParameters(std::string &in, Parameter** out, size_t size) {
     auto lastIndex = findNextPrefix(in, 0);
 
     for (unsigned int i = 0; i < size; i++) {

@@ -7,7 +7,10 @@
 #include <functional>
 #include <fstream>
 #include <queue>
+#include <algorithm>
+#include <stack>
 
+#include "../parsing/Parser.hpp"
 #include "Address.hpp"
 #include "../instructions/include/InstructionLibrary.hpp"
 #include "Subroutine.hpp"
@@ -17,9 +20,9 @@
 class Program {
 private:
     const InstructionSet* instructions;
-    std::vector<Subroutine*> program;
-    std::vector<Subroutine*> fixedSubroutines;
     std::queue<std::string> insertions;
+    std::vector<Subroutine*> processed;
+    Address* passedAddress;
 
     Preprocessor preprocessor;
 public:
@@ -27,6 +30,8 @@ public:
     explicit Program(const InstructionSet& instructionSet);
     ~Program();
     void process(std::ifstream& stream);
+    size_t size ();
+    void compile(byte* out);
 };
 
 #endif //VALENTINEASSEMBLER_PROGRAM_HPP

@@ -2,8 +2,8 @@
 #define VALENTINEASSEMBLER_INSTRUCTIONLIBRARY_HPP
 
 #include "Instruction.hpp"
-#include "../BRA.hpp"
 #include "../MOV.hpp"
+#include "../BRA.hpp"
 #include "../LOD.hpp"
 #include "../JMP.hpp"
 #include "../ADD.hpp"

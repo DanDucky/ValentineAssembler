@@ -11,6 +11,8 @@ struct Address {
     operator size_t() const {
         return address();
     }
+
+    static Address addressFromOffset(size_t fromOrigin);
 };
 
 

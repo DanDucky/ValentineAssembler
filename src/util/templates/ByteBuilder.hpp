@@ -52,6 +52,9 @@ void ByteBuilder<SIZE>::operator+=(const byte bit_) {
 
 template<std::size_t SIZE>
 void ByteBuilder<SIZE>::operator+=(const Bits &set) {
+    //XXX
+    //todo: ERROR HERE VERY BAD ANYTHING OVER 8 BITS FAILS FOR SOME REASON!!!! (where set.size is > 8)
+    //XXX
     const byte rem = 8 - ((bit) % 8);
     const byte offset = -(rem - 8);
     const bool multiByte = (set.size > rem);
@@ -87,8 +90,8 @@ void ByteBuilder<SIZE>::nextByte() {
 }
 
 template<std::size_t SIZE>
-void ByteBuilder<SIZE>::put(byte *ptr) {
-    std::memcpy(ptr, block.block, SIZE);
+void ByteBuilder<SIZE>::put(byte* ptr) {
+    memcpy(ptr, block.block, SIZE);
 }
 
 #endif //VALENTINEASSEMBLER_BYTEBUILDER_HPP

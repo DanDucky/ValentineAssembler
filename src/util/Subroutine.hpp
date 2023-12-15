@@ -26,8 +26,10 @@ public:
     [[nodiscard]] Address getOffset () const;
 
     size_t size ();
+    size_t numberOfInstructions();
 
     void generate(byte * output);
+    void assignReferences();
 };
 
 #endif //VALENTINEASSEMBLER_SUBROUTINE_HPP

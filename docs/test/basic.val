@@ -1,13 +1,24 @@
 /INIT=LOD% Y $!00000001   \    LOD%X $!00000001 ; init x and y to 1
-/DECLTOP=&TOP
 
 .interrupt:1
+ADD
+ADD
+ADD
 
 .origin:0
-\INIT
-ADD \DECLTOP ; add x and y
+JMP #init
+ADD &TOP ; add x and y
 MOV %ACC %X ; move output to the x register
 BRA ^CRY #WAIT ; if the addition operation carries then go to NOP at &WAIT
 JMP #TOP ; if it didn't branch then jump back to the add
 LOD %Y $1 &WAIT ; essentially a NOP
 JMP #WAIT ; jump back to top of infinite wait loop
+
+.init
+\INIT
+JMP #TOP
+
+.test
+ADD
+ADD
+BRA ^CRY #origin

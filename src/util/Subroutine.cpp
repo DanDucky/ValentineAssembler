@@ -4,6 +4,8 @@ void Subroutine::generate(byte *output) {
     size_t position = 0;
     for (const auto & instruction : instructions) {
         instruction->generate(&output[position]);
+//        uint8_t test[4] = {0xFF, 0xFF, 0xFF, 0xFF};
+//        memcpy(&output[position], test, instruction->size());
         position += instruction->size();
     }
 }
@@ -14,6 +16,17 @@ size_t Subroutine::size() {
         size += instruction->size();
     }
     return size;
+}
+
+void Subroutine::assignReferences() {
+    size_t size = fixedOffset.value(); // if this fails then all hell has gone loose
+    for (const auto& instruction : instructions) {
+        if (instruction->hasReference()) {
+            instruction->assignOffset(Address::addressFromOffset(size));
+        }
+
+        size += instruction->size();
+    }
 }
 
 Address Subroutine::getOffset() const {
@@ -43,3 +56,8 @@ Subroutine::~Subroutine() {
 Subroutine::Subroutine(Address address) {
     fixedOffset = address;
 }
+
+size_t Subroutine::numberOfInstructions() {
+    return instructions.size();
+}
+

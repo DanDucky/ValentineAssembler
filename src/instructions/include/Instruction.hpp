@@ -6,12 +6,14 @@
 #include <iostream>
 #include <utility>
 #include <vector>
+#include <optional>
 
 #include "../../parameters/include/Parameter.hpp"
 #include "../settings/opcodes.hpp"
 #include "../settings/sizes.hpp"
 #include "../../util/templates/ByteBuilder.hpp"
 #include "../../util/DerivedConcept.hpp"
+#include "../../util/Address.hpp"
 
 typedef std::uint8_t byte;
 
@@ -24,6 +26,7 @@ typedef std::uint8_t byte;
 class Instruction {
 protected:
     const size_t byteSize;
+    std::optional< Address* > referenceAddress;
 
     explicit Instruction(size_t size) : byteSize(size){
     }
@@ -31,6 +34,15 @@ protected:
 public:
     size_t size () const {
         return this->byteSize;
+    }
+    void assignOffset(Address offset) {
+        *referenceAddress.value() = offset;
+    }
+    void setReferenced(Address* addr) {
+        referenceAddress = addr;
+    }
+    [[nodiscard]] bool hasReference() const {
+        return this->referenceAddress.has_value();
     }
 
     virtual ~Instruction()=default;

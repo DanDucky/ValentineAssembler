@@ -114,11 +114,14 @@ void Preprocessor::replaceBinary(std::string &str) {
 
 void Preprocessor::registerAddresses(std::string &line) {
     if (!line.contains(GET_ADDRESS_PREFIX)) return;
-    const auto lastIndex = line.find(GET_ADDRESS_PREFIX);
-    Program::addresses.insert({line.substr(lastIndex + 1), Address{}});
+    const auto lastIndex = line.find_last_of(GET_ADDRESS_PREFIX);
+    const std::string addressName = line.substr(lastIndex + 1);
+    Program::addresses.insert({addressName, Address{}});
+    *setAddress = &Program::addresses.find(addressName)->second;
 }
 
-Preprocessor::Preprocessor(std::queue<std::string> *insertions) {
+Preprocessor::Preprocessor(std::queue<std::string> *insertions, Address** address) {
     this->insertions = insertions;
+    this->setAddress = address;
 }
 

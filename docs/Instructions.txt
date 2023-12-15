@@ -80,7 +80,7 @@ ASL // shift
 ASR // shift right
 ROL // rotate
 ROR // rotate right
-CMP
+CMP // compare x and y into status
 
 JMP // jump to address
 BRA // branch on selected status bit
@@ -90,6 +90,5 @@ STR // store value in register to stackptr location
 MOV // move any register to any other register
 MOX // move X and Y into PC without disturbing runtime [maybe unnecessary]
 
-// IO with external devices
 PSH // push register to bus and open bus for one cycle
 POL // move bus value to register
