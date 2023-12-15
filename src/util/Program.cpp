@@ -43,7 +43,7 @@ void Program::process(std::ifstream &stream) {
                 Program::addresses.insert({
                     subroutineName,
                     {}
-                }); // TODO remember to set this later!!!
+                }); // remember to set this later!!!
                 passedAddress = &Program::addresses.find(subroutineName)->second;
             } else {
                 const auto constructor = instructions->find(line.substr(0, 3));

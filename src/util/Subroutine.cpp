@@ -4,8 +4,7 @@ void Subroutine::generate(byte *output) {
     size_t position = 0;
     for (const auto & instruction : instructions) {
         instruction->generate(&output[position]);
-//        uint8_t test[4] = {0xFF, 0xFF, 0xFF, 0xFF};
-//        memcpy(&output[position], test, instruction->size());
+
         position += instruction->size();
     }
 }
