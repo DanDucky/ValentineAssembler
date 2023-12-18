@@ -48,3 +48,27 @@ void Parser::split(const string &str, std::string *out, size_t splits, char ch) 
         last = next;
     }
 }
+
+void Parser::addSpaces(string &str) {
+    const auto isPrefix = [] (char ch) -> bool {
+        return std::find(prefixes.begin(), prefixes.end(), ch) != prefixes.end();
+    };
+
+    const auto spaces = std::ranges::count_if(str, isPrefix);
+
+    const auto nextPrefix = [] (std::string & str, size_t begin) -> size_t {
+        size_t out = std::string::npos;
+
+        for (const auto& prefix : prefixes) {
+            out = std::min(str.find(prefix, begin), out); // npos is 0xFFFF... so I don't think this will fail
+        }
+        return out;
+    };
+
+    auto lastIndex = nextPrefix(str, 0);
+
+    for (size_t i = 0; i < spaces; i++) {
+        str.insert(lastIndex, " ");
+        lastIndex = nextPrefix(str, lastIndex + 2);
+    }
+}

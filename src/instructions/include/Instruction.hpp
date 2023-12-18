@@ -26,7 +26,7 @@ typedef std::uint8_t byte;
 class Instruction {
 protected:
     const size_t byteSize;
-    std::optional< Address* > referenceAddress;
+    std::optional<std::optional< Address >*> referenceAddress;
 
     explicit Instruction(size_t size) : byteSize(size){
     }
@@ -38,7 +38,7 @@ public:
     void assignOffset(Address offset) {
         *referenceAddress.value() = offset;
     }
-    void setReferenced(Address* addr) {
+    void setReferenced(std::optional<Address>* addr) {
         referenceAddress = addr;
     }
     [[nodiscard]] bool hasReference() const {

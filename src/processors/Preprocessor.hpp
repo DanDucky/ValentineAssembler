@@ -21,7 +21,7 @@ enum MacroType {
 class Preprocessor {
 private:
     std::queue<std::string>* insertions;
-    Address** setAddress;
+    std::optional<Address>** setAddress;
     std::map<std::string, std::string> macros {};
 
     static void stripComments (std::string& str);
@@ -32,7 +32,7 @@ private:
     MacroType replaceMacros(std::string& line);
     void registerAddresses(std::string& line);
 public:
-    explicit Preprocessor(std::queue<std::string>* insertions, Address** address);
+    explicit Preprocessor(std::queue<std::string>* insertions, std::optional<Address>** address);
     InstructionType processLine (std::string& line);
 };
 

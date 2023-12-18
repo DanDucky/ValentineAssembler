@@ -26,6 +26,14 @@
 
 typedef std::map<char, std::function<Parameter*(std::string&)>> ParameterTable;
 
+static const std::vector<char> prefixes = {
+        REGISTER_PREFIX,
+        CONST_PREFIX,
+        ADDRESS_PREFIX,
+        FLAG_PREFIX,
+        GET_ADDRESS_PREFIX
+};
+
 static const ParameterTable parameterTable = {
         getParam(REGISTER_PREFIX, Register),
         getParam(CONST_PREFIX, Value),
@@ -40,6 +48,7 @@ public:
     static size_t numberOfPrefixes(std::string& str);
     static Address fixedOffset(std::string& str);
     static void split(const std::string &str, std::string *out, size_t splits, char ch);
+    static void addSpaces(std::string& str);
 };
 
 #endif //VALENTINEASSEMBLER_PARSER_HPP

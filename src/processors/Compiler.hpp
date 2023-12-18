@@ -16,17 +16,24 @@
 #include "../util/Subroutine.hpp"
 #include "../processors/Preprocessor.hpp"
 #include "../parameters/include/Parameter.hpp"
+#include "../util/Binary.hpp"
 
 class Compiler {
 private:
     const InstructionSet* instructions;
     std::queue<std::string> insertions;
     std::vector<Subroutine*> processed;
-    Address* passedAddress;
+    std::optional<Address>* passedAddress;
+
+    size_t numberOfLines;
 
     Preprocessor preprocessor;
+
+    void printOut(std::string &line, Instruction *instruction, size_t lineNum, const long time);
+    void countLines(std::ifstream& file);
+
 public:
-    static std::map<std::string, Address> addresses;
+    static std::map<std::string, std::optional<Address>> addresses;
     explicit Compiler(const InstructionSet& instructionSet);
     ~Compiler();
     void process(std::ifstream& stream);

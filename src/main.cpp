@@ -26,5 +26,7 @@ int main() {
 
     outFile.write(reinterpret_cast<const char *>(out), size);
 
+    const auto yo = duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - a).count();
+
     cout << duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - a).count() << " μs\n";
 }
