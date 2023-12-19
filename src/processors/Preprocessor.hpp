@@ -31,6 +31,7 @@ private:
     void addMacro(std::string macro, std::string alias);
     MacroType replaceMacros(std::string& line);
     void registerAddresses(std::string& line);
+    void insertFile(std::string& file);
 public:
     explicit Preprocessor(std::queue<std::string>* insertions, std::optional<Address>** address);
     InstructionType processLine (std::string& line);

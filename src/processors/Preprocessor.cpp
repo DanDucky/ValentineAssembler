@@ -3,9 +3,15 @@
 #include "Compiler.hpp"
 #include <algorithm>
 #include <cstdint>
+#include <fstream>
 
 void Preprocessor::addMacro(std::string macro, std::string alias) {
-    macros.insert({macro, alias});
+    if (macro == "INCLUDE") {
+        // include whole file
+        insertFile(alias);
+    } else {
+        macros.insert({macro, alias});
+    }
 }
 
 void Preprocessor::stripComments(std::string &str) {
@@ -123,5 +129,14 @@ void Preprocessor::registerAddresses(std::string &line) {
 Preprocessor::Preprocessor(std::queue<std::string> *insertions, std::optional<Address>** address) {
     this->insertions = insertions;
     this->setAddress = address;
+}
+
+void Preprocessor::insertFile(std::string &file) {
+    std::ifstream stream(file);
+    std::string line;
+    while (!stream.eof()) {
+        getline(stream, line);
+        insertions->push(line);
+    }
 }
 

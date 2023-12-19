@@ -1,5 +1,6 @@
 #include "Compiler.hpp"
 #include <chrono>
+#include <cmath>
 
 std::map<std::string, std::optional<Address>> Compiler::addresses;
 
@@ -187,16 +188,16 @@ void Compiler::compile(byte *out) {
 void Compiler::printOut(std::string &line, Instruction *instruction, size_t lineNum, const long time) {
     Parser::addSpaces(line);
 
-#define CROSS "┼"
-#define VERTICAL_LINE "│"
-#define HORIZONTAL_LINE "─"
-#define BOTTOM_LEFT_CURVE "╰"
-#define TOP_RIGHT_CURVE "╮"
-#define RIGHT_ARROW ">"
-#define DOWNWARD_CROSS "┬"
-#define UPWARD_CROSS "┴"
-#define RIGHT_CROSS "├"
-#define LEFT_CROSS "┤"
+    #define CROSS "┼"
+    #define VERTICAL_LINE "│"
+    #define HORIZONTAL_LINE "─"
+    #define BOTTOM_LEFT_CURVE "╰"
+    #define TOP_RIGHT_CURVE "╮"
+    #define RIGHT_ARROW ">"
+    #define DOWNWARD_CROSS "┬"
+    #define UPWARD_CROSS "┴"
+    #define RIGHT_CROSS "├"
+    #define LEFT_CROSS "┤"
 
     const auto sizeOfInt = [] (unsigned int n) -> unsigned int {
         return static_cast<unsigned int>(std::log10(n) + 1);

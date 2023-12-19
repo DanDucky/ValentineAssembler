@@ -1,20 +1,53 @@
 #include <iostream>
 #include <string>
 #include <chrono>
+#include <getopt.h>
+#include <filesystem>
+#include <cassert>
 
 #include "instructions/include/InstructionLibrary.hpp"
 #include "util/Subroutine.hpp"
 #include "processors/Preprocessor.hpp"
 #include "processors/Compiler.hpp"
 
+#define switch_no_default(args) \
+    switch(args)                \
+    default:                            \
+    if (true) assert("missing switch case"); \
+    else // my beloved
+
 using namespace std;
 
-int main() {
-    auto a = std::chrono::high_resolution_clock::now();
+int main(int argc, char** argv) {
+    string inputFile;
+    string outputFile;
+
+    if (argc == 1) goto noArgs;
+    int opt;
+    while((opt = getopt(argc, argv, "f:o:")) != -1) {
+        switch_no_default(opt) {
+            case 'f' :
+                inputFile = optarg;
+                break;
+            case 'o' :
+                outputFile = optarg;
+                break;
+        }
+    }
+    noArgs:
+
+    if (inputFile.empty()) {
+        cout << "please input a file to compile:\n\t";
+        cin >> inputFile;
+    }
+
+    if (outputFile.empty()) {
+        outputFile = inputFile.substr(0, inputFile.find_last_of('.')) + ".o";
+    }
 
     Compiler program(parser); // from InstructionLibrary.hpp
-    ifstream file = std::ifstream("/home/danducky/Programming/C++/ValentineAssembler/docs/test/basic.val");
-    ofstream outFile = std::ofstream("/home/danducky/Programming/C++/ValentineAssembler/docs/test/basic.o");
+    ifstream file = std::ifstream(inputFile);
+    ofstream outFile = std::ofstream(outputFile);
     program.process(file);
     file.close();
     const auto size = program.size();
@@ -25,8 +58,5 @@ int main() {
     program.compile(out);
 
     outFile.write(reinterpret_cast<const char *>(out), size);
-
-    const auto yo = duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - a).count();
-
-    cout << duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - a).count() << " μs\n";
+    outFile.close();
 }

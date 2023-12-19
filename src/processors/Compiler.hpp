@@ -29,7 +29,7 @@ private:
 
     Preprocessor preprocessor;
 
-    void printOut(std::string &line, Instruction *instruction, size_t lineNum, const long time);
+    void printOut(std::string &line, Instruction *instruction, size_t lineNum, long time);
     void countLines(std::ifstream& file);
 
 public:

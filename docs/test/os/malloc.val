@@ -30,4 +30,4 @@ STR %ACC
 ; malloc vector will be stored on the second page
 ; size is stored on ACC if applicable
 ; if no size, last flag bit is not set
-BRA ^LAST #
+ADD

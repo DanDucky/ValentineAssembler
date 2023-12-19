@@ -1,4 +1,5 @@
 /INIT=LOD% Y $!00000001   \    LOD%X $!00000001 ; init x and y to 1
+/INCLUDE=/home/danducky/Programming/C++/ValentineAssembler/docs/test/os/malloc.val
 
 .interrupt:1
 ADD

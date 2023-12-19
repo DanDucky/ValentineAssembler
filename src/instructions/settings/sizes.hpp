@@ -20,7 +20,7 @@
 #define LOD_SIZE 2
 
 // memory   SIZE
-#define STR_SIZE
+#define STR_SIZE 1
 #define PUL_SIZE
 #define PSH_SIZE
 #define POL_SIZE

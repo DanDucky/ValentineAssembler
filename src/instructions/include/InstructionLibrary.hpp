@@ -8,6 +8,7 @@
 #include "../JMP.hpp"
 #include "../ADD.hpp"
 #include "../CMP.hpp"
+#include "../STR.hpp"
 
 #include <string>
 #include <functional>
@@ -22,7 +23,8 @@ static const InstructionSet parser = {
         vals(LOD),
         vals(JMP),
         vals(ADD),
-        vals(CMP)
+        vals(CMP),
+        vals(STR)
 };
 
 #endif //VALENTINEASSEMBLER_INSTRUCTIONLIBRARY_HPP
