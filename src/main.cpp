@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <chrono>
-#include <getopt.h>
+#include "../include/universalGetopt.hpp"
 #include <filesystem>
 #include <cassert>
 
@@ -24,13 +24,13 @@ int main(int argc, char** argv) {
 
     if (argc == 1) goto noArgs;
     int opt;
-    while((opt = getopt(argc, argv, "f:o:")) != -1) {
+    while((opt = uni::getopt(argc, argv, "f:o:")) != -1) {
         switch_no_default(opt) {
             case 'f' :
-                inputFile = optarg;
+                inputFile = uni::optarg;
                 break;
             case 'o' :
-                outputFile = optarg;
+                outputFile = uni::optarg;
                 break;
         }
     }
