@@ -36,7 +36,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Download Clang-17
-        if: runner.cc == 'clang-17'
+        if: matrix.cc == 'clang-17'
         run: |
           echo "installing clang 17"
           wget https://apt.llvm.org/llvm.sh
