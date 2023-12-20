@@ -18,6 +18,7 @@
 #include "../parameters/include/Parameter.hpp"
 #include "../util/Binary.hpp"
 
+
 class Compiler {
 private:
     const InstructionSet* instructions;
@@ -25,12 +26,9 @@ private:
     std::vector<Subroutine*> processed;
     std::optional<Address>* passedAddress;
 
-    size_t numberOfLines;
-
     Preprocessor preprocessor;
 
-    void printOut(std::string &line, Instruction *instruction, size_t lineNum, long time);
-    void countLines(std::ifstream& file);
+    static size_t countLines(std::ifstream& file);
 
 public:
     static std::map<std::string, std::optional<Address>> addresses;

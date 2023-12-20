@@ -1,4 +1,5 @@
 #include "Compiler.hpp"
+#include "../util/Printer.hpp"
 #include <chrono>
 #include <cmath>
 
@@ -10,13 +11,13 @@ Compiler::Compiler(const InstructionSet& instructionSet) : instructions(&instruc
 
 void Compiler::process(std::ifstream &stream) {
     if (!stream.is_open()) return;
-    countLines(stream);
     std::string line;
     unsigned int lineNum = 0;
     unsigned int innerMacroLineNum = 0;
     Subroutine* currentSubroutine;
     std::vector<Subroutine*> dynamicSubroutines;
     std::vector<Subroutine*> fixedSubroutines;
+    Printer printer(countLines(stream));
     while (!stream.eof()) {
         auto timer = std::chrono::high_resolution_clock::now();
         if (insertions.empty()) {
@@ -49,6 +50,8 @@ void Compiler::process(std::ifstream &stream) {
                     {}
                 }); // remember to set this later!!!
                 passedAddress = &Compiler::addresses.find(subroutineName)->second;
+
+                printer.printSubroutine(subroutineName, lineNum);
             } else {
                 const auto constructor = instructions->find(line.substr(0, 3));
                 if (constructor != instructions->end()) { // instruction exists
@@ -62,8 +65,7 @@ void Compiler::process(std::ifstream &stream) {
                         instruction->setReferenced(passedAddress);
                     }
 
-                    // todo tui output for compiler
-                    printOut(line, instruction, lineNum, std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - timer).count());
+                    printer.printInstruction(line, instruction, {lineNum, innerMacroLineNum}, std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - timer).count());
 
                     for (unsigned short i = 0; i < size; i++) { // bruh windows does NOT like range based for loops
                         delete params[i]; // cringe
@@ -185,73 +187,9 @@ void Compiler::compile(byte *out) {
     }
 }
 
-void Compiler::printOut(std::string &line, Instruction *instruction, size_t lineNum, const long time) {
-    Parser::addSpaces(line);
-
-    #define CROSS "┼"
-    #define VERTICAL_LINE "│"
-    #define HORIZONTAL_LINE "─"
-    #define BOTTOM_LEFT_CURVE "╰"
-    #define TOP_RIGHT_CURVE "╮"
-    #define RIGHT_ARROW ">"
-    #define DOWNWARD_CROSS "┬"
-    #define UPWARD_CROSS "┴"
-    #define RIGHT_CROSS "├"
-    #define LEFT_CROSS "┤"
-
-    const auto sizeOfInt = [] (unsigned int n) -> unsigned int {
-        return static_cast<unsigned int>(std::log10(n) + 1);
-    };
-
-    const unsigned int leftBufferSize = sizeOfInt(numberOfLines);
-
-    const auto buffer = [] (unsigned int size, std::string ch) -> std::string {
-        std::string buff;
-        for (unsigned int i = 0; i < size; i++) {
-            buff += ch;
-        }
-        return buff;
-    };
-
-    const unsigned int lineBufferSize = std::max(static_cast<size_t>(20), line.size() + 1);
-
-    uint8_t binary[instruction->size()];
-
-    instruction->generate(binary);
-
-    using namespace std;
-    cout << "Line " << lineNum << buffer(leftBufferSize - sizeOfInt(lineNum), " ");
-    cout << " " << CROSS << " " << line << " " << buffer(lineBufferSize - line.size(), HORIZONTAL_LINE);
-    if (instruction->size() > 1) {
-        const auto offset = buffer(5 + leftBufferSize + 1, " ") + VERTICAL_LINE + buffer(2 + lineBufferSize, " ");
-
-        for (int i = 0; i < instruction->size(); i++) {
-            if (i == 0) {
-                cout << DOWNWARD_CROSS;
-            } else if (i + 1 == instruction->size()) {
-                cout << offset << BOTTOM_LEFT_CURVE;
-            } else {
-                cout << offset << RIGHT_CROSS;
-            }
-            cout << HORIZONTAL_LINE << RIGHT_ARROW << " " << Binary::binaryToString(binary[i]);
-            cout << " " << HORIZONTAL_LINE;
-            if (i == 0) {
-                cout << TOP_RIGHT_CURVE << "\n";
-            } else if (i + 1 == instruction->size()) {
-                cout << UPWARD_CROSS;
-            } else {
-                cout << LEFT_CROSS << "\n";
-            }
-        }
-        cout << HORIZONTAL_LINE;
-    } else {
-        cout << buffer(2, HORIZONTAL_LINE) << RIGHT_ARROW << " " << Binary::binaryToString(binary[0]) << " " << buffer(3, HORIZONTAL_LINE);
-    }
-    cout << RIGHT_ARROW << " compiled in " << time << " microseconds\n";
-}
-
-void Compiler::countLines(std::ifstream &file) {
-    numberOfLines = std::count(std::istreambuf_iterator<char>(file),
+size_t Compiler::countLines(std::ifstream &file) {
+    const size_t out = std::count(std::istreambuf_iterator<char>(file),
             std::istreambuf_iterator<char>(), '\n');
     file.seekg(0);
+    return out;
 }
