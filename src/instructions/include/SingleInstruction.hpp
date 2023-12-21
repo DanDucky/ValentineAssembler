@@ -3,6 +3,12 @@
 
 #include "Instruction.hpp"
 
+#define concat(one, two) one##two
+#define single(instruction) \
+class instruction : public SingleInstruction { \
+    public:                 \
+        constructor(instruction) : SingleInstruction(concat(instruction, _OPCODE)) {} }
+
 class SingleInstruction extends public Instruction {
 private:
     const Bits opcode;

@@ -6,10 +6,11 @@
 #include "../BRA.hpp"
 #include "../LOD.hpp"
 #include "../JMP.hpp"
-#include "../ADD.hpp"
-#include "../CMP.hpp"
+#include "../singles/ADD.hpp"
+#include "../singles/CMP.hpp"
 #include "../STR.hpp"
-#include "../STP.hpp"
+#include "../singles/STP.hpp"
+#include "../singles/BOR.hpp"
 
 #include <string>
 #include <functional>
@@ -23,11 +24,12 @@ static const InstructionSet parser = {
         vals(BRA),
         vals(LOD),
         vals(JMP),
-        vals(ADD),
-        vals(CMP),
         vals(STR),
 
-        vals(STP)
+        vals(ADD),
+        vals(CMP),
+        vals(STP),
+        vals(BOR)
 };
 
 #endif //VALENTINEASSEMBLER_INSTRUCTIONLIBRARY_HPP
