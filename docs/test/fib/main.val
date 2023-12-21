@@ -1,0 +1,70 @@
+; calculates fibonacci sequence and stores it in memory and pushes each value to i/o
+
+.origin:0
+LOD %STACK1 $0
+LOD %STACK2 $0
+LOD %FLAGS $!00001000 ; disable interrupts
+; 0,0 will be last.0
+; 0,1 will be last.1
+LOD %ACC $0
+STR %ACC
+LOD %STACK2 $1
+LOD %ACC $1
+STR %ACC
+LOD %STACK2 $2
+LOD %ACC $0
+STR %ACC
+
+; at this point it looks like:
+; 0x00 : 0
+; 0x01 : 1
+; 0x02 : 0 <- stack ptr is here
+
+STS &beginloop
+JMP #retrieve
+LDS
+ADD &retrieved
+JMP #istack
+STR %ACC &pos
+STS
+JMP #storelast
+LDS &stored
+JMP #beginloop
+
+.interrupt:1
+LDP
+
+.storelast
+LOD %STACK1 $0
+LOD %STACK2 $1
+PUL %X
+STR %ACC
+LOD %STACK1 $0
+STR %X
+JMP #stored
+
+.retrieve
+LOD %STACK1 $0
+LOD %STACK2 $0
+PUL %X
+LOD %STACK2 $1
+PUL %Y
+JMP #retrieved
+
+.istack ; increment stack by 1 and saves the value of the ACC
+STR %ACC
+STS ; store current position
+MOV %STACK1 %X
+LOD %Y $1
+ADD
+MOV %ACC %STACK1
+MOV %STACK2 %X
+ADD
+LOD %FLAGS $!00001000 ; disable interrupts again and remove any carry from previous ops
+MOV %STACK1 %X
+MOV %STACK2 %Y
+LDS
+PUL %ACC
+MOV %X %STACK1
+MOV %Y %STACK2
+JMP #pos

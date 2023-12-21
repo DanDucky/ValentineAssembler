@@ -21,8 +21,8 @@ void Parser::getParameters(std::string &in, Parameter** out, size_t size) {
 
 size_t Parser::findNextPrefix(string &str, size_t start) {
     size_t out = std::string::npos;
-    for (const auto& prefix : parameterTable) {
-        out = std::min(str.find(prefix.first, start), out); // npos is 0xFFFF... so I don't think this will fail
+    for (const auto& prefix : prefixes) {
+        out = std::min(str.find(prefix, start), out); // npos is 0xFFFF... so I don't think this will fail
     }
     return out;
 }

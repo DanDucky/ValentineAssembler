@@ -138,5 +138,6 @@ void Preprocessor::insertFile(std::string &file) {
         getline(stream, line);
         insertions->push(line);
     }
+    stream.close();
 }
 
