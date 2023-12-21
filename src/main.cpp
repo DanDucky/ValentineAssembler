@@ -1,10 +1,10 @@
 #include <iostream>
 #include <string>
 #include <chrono>
-#include "../include/universalGetopt.hpp"
 #include <filesystem>
 #include <cassert>
 
+#include "../include/universalGetopt.hpp"
 #include "instructions/include/InstructionLibrary.hpp"
 #include "util/Subroutine.hpp"
 #include "processors/Preprocessor.hpp"
