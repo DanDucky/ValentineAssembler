@@ -14,6 +14,7 @@
 class Parameter {
 public:
     virtual Bits getBits()=0;
+    virtual ~Parameter()=default;
     operator Bits() {
         return getBits();
     };

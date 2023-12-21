@@ -3,21 +3,24 @@
 
 .initmalloc
 ; initiallize the storage area
-LOD %ACC $\LISTING
-MOV %ACC %STACK2 ; page set to 1
-LOD %STACK1 $!00000000 ; index set to 0
-; stackptr set to 00000000 00000001 {1, 0}
-STR %ACC
-LOD %STACK1 $!00000001
-LOD %X $!00000000
-STR %X
-LOD %STACK1 $2
-STR %ACC ; set page to 1
-LOD %X $255
-LOD %STACK1 $3
-STR %X
-LOD %STACK1 $4
-STR %ACC
+;LOD %ACC $\LISTING
+;MOV %ACC %STACK2 ; page set to 1
+;LOD %STACK1 $!00000000 ; index set to 0
+;; stackptr set to 00000000 00000001 {1, 0}
+;STR %ACC
+;LOD %STACK1 $!00000001
+;LOD %X $!00000000
+;STR %X
+;LOD %STACK1 $2
+;STR %ACC ; set page to 1
+;LOD %X $255
+;LOD %STACK1 $3
+;STR %X
+;LOD %STACK1 $4
+;STR %ACC
+STP
+STP
+STP
 ; looks like this:
 ; 0x0000 00000001 (listing)
 ; 0x0001 00000000 (0 index)

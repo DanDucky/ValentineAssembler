@@ -1,4 +1,4 @@
-/INIT=LOD% Y $!00000001   \    LOD%X $!00000001 ; init x and y to 1
+;/INIT=LOD% Y $!00000001   \    LOD%X $!00000001 ; init x and y to 1
 /INCLUDE=/home/danducky/Programming/C++/ValentineAssembler/docs/test/os/malloc.val
 
 .interrupt:1
@@ -16,10 +16,10 @@ LOD %Y $1 &WAIT ; essentially a NOP
 JMP #WAIT ; jump back to top of infinite wait loop
 
 .init
-\INIT
+;\INIT
 JMP #TOP
 
-.test
-ADD
-ADD
-BRA ^CRY #origin
+;.test
+;ADD
+;ADD
+;BRA ^CRY #origin
