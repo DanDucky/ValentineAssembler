@@ -56,10 +56,8 @@ int main(int argc, char** argv) {
     }
 
     Compiler program(parser); // from InstructionLibrary.hpp
-    ifstream file = std::ifstream(inputFile);
     ofstream outFile = std::ofstream(outputFile);
-    program.process(file);
-    file.close();
+    program.process(inputFile);
     const auto size = program.size();
     uint8_t out[size];
     for (size_t i = 0; i < size; i++) {

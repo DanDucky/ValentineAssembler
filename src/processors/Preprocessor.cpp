@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <fstream>
+#include <filesystem>
 
 void Preprocessor::addMacro(std::string macro, std::string alias) {
     if (macro == "INCLUDE") {
@@ -126,12 +127,15 @@ void Preprocessor::registerAddresses(std::string &line) {
     *setAddress = &Compiler::addresses.find(addressName)->second;
 }
 
-Preprocessor::Preprocessor(std::queue<std::string> *insertions, std::optional<Address>** address) {
+Preprocessor::Preprocessor(std::queue<std::string> *insertions, std::optional<Address>** address, std::vector<std::string>* files) {
     this->insertions = insertions;
     this->setAddress = address;
+    this->files = files;
 }
 
-void Preprocessor::insertFile(std::string &file) {
+void Preprocessor::insertFile(const std::string &file) {
+    const std::filesystem::path path(file);
+    files->push_back(path.filename().string());
     std::ifstream stream(file);
     std::string line;
     while (!stream.eof()) {

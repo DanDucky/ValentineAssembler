@@ -23,6 +23,7 @@ private:
     std::queue<std::string>* insertions;
     std::optional<Address>** setAddress;
     std::map<std::string, std::string> macros {};
+    std::vector<std::string>* files;
 
     static void stripComments (std::string& str);
     static void removeWhitespace (std::string& str);
@@ -31,9 +32,9 @@ private:
     void addMacro(std::string macro, std::string alias);
     MacroType replaceMacros(std::string& line);
     void registerAddresses(std::string& line);
-    void insertFile(std::string& file);
+    void insertFile(const std::string &file);
 public:
-    explicit Preprocessor(std::queue<std::string>* insertions, std::optional<Address>** address);
+    explicit Preprocessor(std::queue<std::string>* insertions, std::optional<Address>** address, std::vector<std::string>* files);
     InstructionType processLine (std::string& line);
 };
 

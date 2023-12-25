@@ -70,3 +70,29 @@ void Printer::printSubroutine(const std::string &line, size_t lineNum) const {
     cout << RIGHT_ARROW << " ." << line;
     cout << "\n";
 }
+
+void Printer::printStats(std::vector<std::string> *files, unsigned long time) const {
+    using namespace std;
+    const unsigned int lineBufferSize = std::max(static_cast<size_t>(20), files->front().size() + 1);
+    cout << buffer(5 + leftBufferSize + 1, " ") << VERTICAL_LINE << "\n" << "Trace" << buffer(leftBufferSize + 1, " ") << CROSS << " ";
+    cout << files->front();
+    if (files->size() > 1) {
+        cout << " " << buffer(lineBufferSize - files->front().size(), HORIZONTAL_LINE);
+        const auto offset = buffer(5 + leftBufferSize + 1, " ") + VERTICAL_LINE + buffer(2 + lineBufferSize, " ");
+
+        for (int i = 0; i < files->size() - 1; i++) {
+            if (i == 0) {
+                if (files->size() > 2) cout << DOWNWARD_CROSS;
+                else cout << HORIZONTAL_LINE;
+            } else if (i + 1 == files->size() - 1) {
+                cout << offset << BOTTOM_LEFT_CURVE;
+            } else {
+                cout << offset << RIGHT_CROSS;
+            }
+            cout << HORIZONTAL_LINE << RIGHT_ARROW << " " << (*files)[i + 1] << "\n";
+        }
+    } else {
+        cout << "\n";
+    }
+    cout << buffer(5 + leftBufferSize + 1, " ") << VERTICAL_LINE << "\n" << "Timer" << buffer(leftBufferSize + 1, " ") << UPWARD_CROSS << " " << std::to_string(time) << " μs\n";
+}

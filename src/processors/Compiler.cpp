@@ -1,23 +1,25 @@
+#include <filesystem>
 #include "Compiler.hpp"
-#include "../util/Printer.hpp"
-#include <chrono>
-#include <cmath>
 
 std::map<std::string, std::optional<Address>> Compiler::addresses;
 
-Compiler::Compiler(const InstructionSet& instructionSet) : instructions(&instructionSet) , passedAddress(nullptr), preprocessor(&insertions, &passedAddress) {
+Compiler::Compiler(const InstructionSet& instructionSet) : instructions(&instructionSet) , passedAddress(nullptr), preprocessor(&insertions, &passedAddress, &filesProcessed) {
 
 }
 
-void Compiler::process(std::ifstream &stream) {
+void Compiler::process(const std::string &fileName) {
+    const std::filesystem::path path(fileName);
+    std::ifstream stream(path);
     if (!stream.is_open()) return;
+    filesProcessed.push_back(path.filename().string());
     std::string line;
     unsigned int lineNum = 0;
     unsigned int innerMacroLineNum = 0;
     Subroutine* currentSubroutine;
     std::vector<Subroutine*> dynamicSubroutines;
     std::vector<Subroutine*> fixedSubroutines;
-    Printer printer(countLines(stream));
+    printer = new Printer(countLines(stream));
+    begin = std::chrono::high_resolution_clock::now();
     while (!stream.eof()) {
         auto timer = std::chrono::high_resolution_clock::now();
         if (insertions.empty()) {
@@ -51,7 +53,7 @@ void Compiler::process(std::ifstream &stream) {
                 }); // remember to set this later!!!
                 passedAddress = &Compiler::addresses.find(subroutineName)->second;
 
-                printer.printSubroutine(subroutineName, lineNum);
+                printer.value()->printSubroutine(subroutineName, lineNum);
             } else {
                 const auto constructor = instructions->find(line.substr(0, 3));
                 if (constructor != instructions->end()) { // instruction exists
@@ -65,7 +67,7 @@ void Compiler::process(std::ifstream &stream) {
                         instruction->setReferenced(passedAddress);
                     }
 
-                    printer.printInstruction(line, instruction, {lineNum, innerMacroLineNum}, std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - timer).count());
+                    printer.value()->printInstruction(line, instruction, {lineNum, innerMacroLineNum}, timeSince(timer));
 
                     for (unsigned short i = 0; i < size; i++) { // bruh windows does NOT like range based for loops
                         delete params[i]; // cringe
@@ -74,6 +76,7 @@ void Compiler::process(std::ifstream &stream) {
             }
         }
     }
+    stream.close();
     // here re-arrange subroutines to best order
 
     if (!fixedSubroutines.empty()) {
@@ -165,6 +168,9 @@ Compiler::~Compiler() {
     for (const auto& subroutine : processed) {
         delete subroutine;
     }
+    if (printer.has_value()) {
+        delete printer.value();
+    }
 }
 
 size_t Compiler::size() {
@@ -185,6 +191,7 @@ void Compiler::compile(byte *out) {
 
         size += subroutine->size();
     }
+    printer.value()->printStats(&filesProcessed, timeSince(begin));
 }
 
 size_t Compiler::countLines(std::ifstream &file) {

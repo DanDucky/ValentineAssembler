@@ -30,6 +30,7 @@ public:
     explicit Printer(size_t file);
     void printInstruction(std::string &line, Instruction *instruction, std::pair<size_t, size_t> lineNum, long time) const;
     void printSubroutine(const std::string &line, size_t lineNum) const;
+    void printStats(std::vector<std::string>* files, unsigned long time) const;
 };
 
 

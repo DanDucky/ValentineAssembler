@@ -22,10 +22,11 @@ STR %ACC
 
 STS &beginloop
 JMP #retrieve
-LDS
-ADD &retrieved
+LDS &retrieved
+ADD
 JMP #istack
 STR %ACC &pos
+PSH %ACC
 STS
 JMP #storelast
 LDS &stored
