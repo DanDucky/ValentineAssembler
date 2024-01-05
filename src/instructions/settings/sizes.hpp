@@ -14,4 +14,19 @@
 
 #define MOV_SIZE 1
 
+#define ADD_SIZE 1
+#define CMP_SIZE 1
+#define STP_SIZE 1
+#define BOR_SIZE 1
+#define ASL_SIZE 1
+#define ASR_SIZE 1
+#define LDP_SIZE 1
+#define LDS_SIZE 1
+#define NOT_SIZE 1
+#define ROL_SIZE 1
+#define ROR_SIZE 1
+#define STS_SIZE 1
+#define SUB_SIZE 1
+#define XOR_SIZE 1
+
 #endif //VALENTINEASSEMBLER_SIZES_HPP

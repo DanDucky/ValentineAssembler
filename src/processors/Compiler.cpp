@@ -60,7 +60,7 @@ void Compiler::process(const std::string &fileName) {
                     const size_t size = Parser::numberOfPrefixes(line);
                     Parameter* params[size];
                     Parser::getParameters(line, params, size);
-                    Instruction* instruction = constructor->second(&params[0]);
+                    Instruction* instruction = constructor->second.first(&params[0]);
                     currentSubroutine->addInstruction(instruction);
 
                     if (line.contains(GET_ADDRESS_PREFIX) || currentSubroutine->numberOfInstructions() == 1) { // if saving address or if it's the first instruction of a subroutine

@@ -23,38 +23,7 @@
 
 using namespace std;
 
-int main(int argc, char** argv) {
-
-#ifdef _WIN32
-    SetConsoleOutputCP(65001);
-#endif
-
-    string inputFile;
-    string outputFile;
-
-    if (argc == 1) goto noArgs;
-    int opt;
-    while((opt = uni::getopt(argc, argv, "f:o:")) != -1) {
-        switch_no_default(opt) {
-            case 'f' :
-                inputFile = uni::optarg;
-                break;
-            case 'o' :
-                outputFile = uni::optarg;
-                break;
-        }
-    }
-    noArgs:
-
-    if (inputFile.empty()) {
-        cout << "please input a file to compile:\n\t";
-        cin >> inputFile;
-    }
-
-    if (outputFile.empty()) {
-        outputFile = inputFile.substr(0, inputFile.find_last_of('.')) + ".o";
-    }
-
+void compileFiles(const std::string& inputFile, const std::string& outputFile) {
     Compiler program(parser); // from InstructionLibrary.hpp
     ofstream outFile = std::ofstream(outputFile);
     program.process(inputFile);
@@ -67,4 +36,67 @@ int main(int argc, char** argv) {
 
     outFile.write(reinterpret_cast<const char *>(out), size);
     outFile.close();
+}
+
+void getInstructionsTo(const std::string& outputFile) {
+
+}
+
+int main(int argc, char** argv) {
+
+#ifdef _WIN32
+    SetConsoleOutputCP(65001);
+#endif
+
+    string inputFile;
+    string outputFile;
+
+    bool writeInstructions = false;
+    bool compile = true;
+
+    if (argc == 1) goto noArgs;
+    int opt;
+    while((opt = uni::getopt(argc, argv, "f:o:in")) != -1) {
+        switch_no_default(opt) {
+            case 'f' :
+                inputFile = uni::optarg;
+                break;
+            case 'o' :
+                outputFile = uni::optarg;
+                break;
+            case 'i' :
+                writeInstructions = true;
+                break;
+            case 'n' :
+                compile = false;
+                break;
+        }
+    }
+    noArgs:
+
+    if (inputFile.empty()) {
+        cout << "please input a file to compile or type \'n\' to only compile instructions:\n\t";
+        std::string input;
+        cin >> input;
+        if (input == "n") {
+            compile = false;
+        } else {
+            inputFile = input;
+        }
+    }
+
+    if (outputFile.empty()) {
+        if (inputFile.empty()) {
+            cout << "please provide an output file if not compiling from source code\n";
+            return 1;
+        }
+        outputFile = std::filesystem::path(inputFile).parent_path() / std::filesystem::path(inputFile).stem().concat(".o");
+    }
+
+    if (compile) {
+        compileFiles(inputFile, outputFile);
+    }
+    if (writeInstructions || !compile) {
+        getInstructionsTo(outputFile);
+    }
 }

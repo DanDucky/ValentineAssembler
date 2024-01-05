@@ -29,9 +29,15 @@
 #include <string>
 #include <functional>
 
-#define vals( instruction ) {#instruction, {&Instruction::factory<instruction>}}
+#define vals( instruction ) {#instruction, {{&Instruction::factory<instruction>}, {instruction##_OPCODE, instruction##_SIZE}}}
 
-typedef std::unordered_map<std::string, std::function<Instruction*(Parameter**)>> InstructionSet;
+struct OpcodeInformation {
+    const Bits opcode;
+    const size_t size;
+};
+
+typedef std::unordered_map<std::string, std::pair<std::function<Instruction*(Parameter**)>, const OpcodeInformation>> InstructionSet;
+
 
 static const InstructionSet parser = {
         vals(MOV),
