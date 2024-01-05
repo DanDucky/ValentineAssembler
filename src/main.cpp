@@ -90,7 +90,7 @@ int main(int argc, char** argv) {
             cout << "please provide an output file if not compiling from source code\n";
             return 1;
         }
-        outputFile = std::filesystem::path(inputFile).parent_path() / std::filesystem::path(inputFile).stem().concat(".o");
+        outputFile = std::string{(std::filesystem::path(inputFile).parent_path() / std::filesystem::path(inputFile).stem().concat(".o"))};
     }
 
     if (compile) {
