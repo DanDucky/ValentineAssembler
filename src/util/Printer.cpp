@@ -4,7 +4,7 @@ Printer::Printer(size_t file) : leftBufferSize(sizeOfInt(file)){
 
 }
 
-constexpr std::string Printer::buffer(size_t size, const std::string &ch) {
+std::string Printer::buffer(size_t size, const std::string &ch) {
     std::string buff;
     for (unsigned int i = 0; i < size; i++) {
         buff += ch;

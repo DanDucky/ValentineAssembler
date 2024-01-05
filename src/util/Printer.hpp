@@ -24,7 +24,7 @@ class Printer {
 private:
     const unsigned int leftBufferSize;
 
-    static constexpr std::string buffer(size_t size, const std::string& ch);
+    static std::string buffer(size_t size, const std::string& ch);
     static unsigned int sizeOfInt(unsigned int n);
 public:
     explicit Printer(size_t file);
