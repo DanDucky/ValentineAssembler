@@ -75,10 +75,10 @@ int main(int argc, char** argv) {
     noArgs:
 
     if (inputFile.empty()) {
-        cout << "please input a file to compile or type \'n\' to only compile instructions:\n\t";
+        cout << "please input a file to compile or click ENTER to only compile instructions:\n\t";
         std::string input;
         cin >> input;
-        if (input == "n") {
+        if (input.empty()) {
             compile = false;
         } else {
             inputFile = input;
