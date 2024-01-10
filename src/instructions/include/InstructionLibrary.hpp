@@ -2,6 +2,10 @@
 #define VALENTINEASSEMBLER_INSTRUCTIONLIBRARY_HPP
 
 #include "Instruction.hpp"
+
+#include "../settings/internal.hpp"
+#include "../settings/parameters.hpp"
+
 #include "../MOV.hpp"
 #include "../BRA.hpp"
 #include "../LOD.hpp"
@@ -25,19 +29,21 @@
 #include "../singles/SUB.hpp"
 #include "../singles/XOR.hpp"
 #include "../singles/ASR.hpp"
+#include "../singles/MPC.hpp"
+#include "../singles/NOP.hpp"
 
 #include <string>
 #include <functional>
 
-#define vals( instruction ) {#instruction, {{&Instruction::factory<instruction>}, {instruction##_OPCODE, instruction##_SIZE}}}
+#define vals( instruction ) {#instruction, {{&Instruction::factory<instruction>}, {instruction##_OPCODE, instruction##_INTERNAL_OPCODE , instruction##_INTERNAL_PARAMS}}}
 
 struct OpcodeInformation {
     const Bits opcode;
-    const size_t size;
+    const Bits internalOpcode;
+    const Bits internalParameter;
 };
 
-typedef std::unordered_map<std::string, std::pair<std::function<Instruction*(Parameter**)>, const OpcodeInformation>> InstructionSet;
-
+typedef std::unordered_map<std::string, const std::pair<std::function<Instruction*(Parameter**)>, const OpcodeInformation>> InstructionSet;
 
 static const InstructionSet parser = {
         vals(MOV),
@@ -62,7 +68,9 @@ static const InstructionSet parser = {
         vals(ROR),
         vals(STS),
         vals(SUB),
-        vals(XOR)
+        vals(XOR),
+        vals(MPC),
+        vals(NOP)
 };
 
 #endif //VALENTINEASSEMBLER_INSTRUCTIONLIBRARY_HPP

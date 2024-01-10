@@ -1,0 +1,37 @@
+BITS AND THEIR ASSIGNED VALUES
+
+
+0  : PUSH/PULL from bus flag (1=MOV-like instruction, 0=ignore)
+1  : PUSH REG
+2  : PUSH REG
+3  : PUSH REG
+4  : PULL REG
+5  : PULL REG
+6  : PULL REG
+7  : ALU COMMAND 					[if 7-11 are 0 then no ALU]
+8  : ALU COMMAND
+9  : ALU COMMAND
+10 : ALU COMMAND
+11 : ALU COMMAND
+12 : ALT COMMAND					[use the following bits for any other instructions]
+13 : ALT COMMAND
+14 : ALT COMMAND
+15 : ALT COMMAND
+
+
+OR
+
+0 : COMMAND
+1 : COMMAND
+2 : COMMAND
+3 : COMMAND
+4 : COMMAND
+5 : COMMAND
+6 : COMMAND
+7 : COMMAND
+
+where
+
+0 = MOV
+
+

@@ -60,6 +60,7 @@ LOD %Y $1
 ADD
 MOV %ACC %STACK1
 MOV %STACK2 %X
+LOD %Y $0
 ADD
 LOD %FLAGS $!00001000 ; disable interrupts again and remove any carry from previous ops
 MOV %STACK1 %X

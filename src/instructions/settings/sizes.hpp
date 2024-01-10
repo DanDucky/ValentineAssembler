@@ -28,5 +28,7 @@
 #define STS_SIZE 1
 #define SUB_SIZE 1
 #define XOR_SIZE 1
+#define MPC_SIZE 1
+#define NOP_SIZE 1
 
 #endif //VALENTINEASSEMBLER_SIZES_HPP

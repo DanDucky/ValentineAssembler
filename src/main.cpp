@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <chrono>
 #include <filesystem>
 #include <cassert>
 
@@ -39,7 +38,16 @@ void compileFiles(const std::string& inputFile, const std::string& outputFile) {
 }
 
 void getInstructionsTo(const std::string& outputFile) {
-
+    ofstream outFile = std::ofstream(outputFile);
+    uint8_t out[256];
+    for (const auto& instruction : parser) {
+        const auto opcode = instruction.second.second.opcode;
+        for (int i = 0; i < std::pow(2, 8 - opcode.size); i++) {
+            out[i << opcode.size | opcode.value] = instruction.second.second.internalOpcode.value | (instruction.second.second.internalParameter.value << 4);
+        }
+    }
+    outFile.write(reinterpret_cast<const char *>(out), 256);
+    outFile.close();
 }
 
 int main(int argc, char** argv) {
@@ -97,6 +105,9 @@ int main(int argc, char** argv) {
         compileFiles(inputFile, outputFile);
     }
     if (writeInstructions || !compile) {
+        if (compile) {
+            outputFile = (std::filesystem::path(outputFile).parent_path() / std::filesystem::path("INSTRUCTION_DECODER.o"));
+        }
         getInstructionsTo(outputFile);
     }
 }

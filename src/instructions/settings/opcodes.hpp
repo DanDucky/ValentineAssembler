@@ -17,14 +17,16 @@
 #define STS_OPCODE {0b110010, 6} // store stack ptr internal
 #define LDP_OPCODE {0b110110, 6} // load pc
 #define LDS_OPCODE {0b111010, 6} // load stackptr
+#define MPC_OPCODE {0b111110, 6} // X+Y -> PC
 
 // program
-#define BRA_OPCODE {0b0001, 4}
-#define JMP_OPCODE {0b0101, 4}
-#define LOD_OPCODE {0b1101, 4}
+#define BRA_OPCODE {0b0001, 4} // 3
+#define JMP_OPCODE {0b0101, 4} // 3
+#define LOD_OPCODE {0b1101, 4} // 2
+#define NOP_OPCODE {0b1001, 4} // 1
 
 // memory
-#define STR_OPCODE {0b0000, 4}
+#define STR_OPCODE {0b0000, 4} // 1
 #define PUL_OPCODE {0b0100, 4}
 #define PSH_OPCODE {0b1000, 4}
 #define POL_OPCODE {0b1100, 4}

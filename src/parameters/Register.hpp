@@ -10,11 +10,11 @@
 
 // REGISTER MAP!!!!
 enum RegisterID {
-    X,
-    Y,
-    ACC,
     PC1,
     PC2,
+    ACC,
+    Y,
+    X,
     STACK1,
     STACK2,
     FLAGS

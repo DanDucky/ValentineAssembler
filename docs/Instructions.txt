@@ -88,7 +88,7 @@ LOD // pull value from rom to register
 PUL // pull value from memory to register
 STR // store value in register to stackptr location
 MOV // move any register to any other register
-MOX // move X and Y into PC without disturbing runtime [maybe unnecessary]
+MPC // move X and Y into PC without disturbing runtime [maybe unnecessary]
 
 PSH // push register to bus and open bus for one cycle
 POL // move bus value to register
