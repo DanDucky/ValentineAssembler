@@ -192,6 +192,7 @@ void Compiler::compile(byte *out) {
         size += subroutine->size();
     }
     printer.value()->printStats(&filesProcessed, timeSince(begin));
+    printer.value()->printHexDump(out, size);
 }
 
 size_t Compiler::countLines(std::ifstream &file) {

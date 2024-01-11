@@ -11,7 +11,7 @@
 typedef uint8_t byte;
 
 struct Bits {
-    const uint32_t value;
+    const uint16_t value;
     const byte size;
 };
 

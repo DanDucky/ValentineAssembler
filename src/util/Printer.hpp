@@ -6,6 +6,8 @@
 #define HORIZONTAL_LINE "─"
 #define BOTTOM_LEFT_CURVE "╰"
 #define TOP_RIGHT_CURVE "╮"
+#define TOP_LEFT_CURVE "╭"
+#define BOTTOM_RIGHT_CURVE "╯"
 #define RIGHT_ARROW ">"
 #define DOWNWARD_CROSS "┬"
 #define UPWARD_CROSS "┴"
@@ -15,6 +17,8 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <iomanip>
+#include <cstdio>
 
 #include "../instructions/include/Instruction.hpp"
 #include "Parser.hpp"
@@ -31,6 +35,7 @@ public:
     void printInstruction(std::string &line, Instruction *instruction, std::pair<size_t, size_t> lineNum, long time) const;
     void printSubroutine(const std::string &line, size_t lineNum) const;
     void printStats(std::vector<std::string>* files, unsigned long time) const;
+    void printHexDump(const uint8_t*, size_t size) const;
 };
 
 

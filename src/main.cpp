@@ -14,6 +14,8 @@
 #pragma execution_character_set("utf-8")
 #endif
 
+using std::filesystem::path;
+
 #define switch_no_default(args) \
     switch(args)                \
     default:                            \
@@ -22,7 +24,7 @@
 
 using namespace std;
 
-void compileFiles(const std::string& inputFile, const std::string& outputFile) {
+void compileFiles(const path& inputFile, const path& outputFile) {
     Compiler program(parser); // from InstructionLibrary.hpp
     ofstream outFile = std::ofstream(outputFile);
     program.process(inputFile);
@@ -37,9 +39,9 @@ void compileFiles(const std::string& inputFile, const std::string& outputFile) {
     outFile.close();
 }
 
-void getInstructionsTo(const std::string& outputFile) {
+void getInstructionsTo(const path& outputFile) {
     ofstream outFile = std::ofstream(outputFile);
-    uint8_t out[256];
+    uint8_t out[256] = {0};
     for (const auto& instruction : parser) {
         const auto opcode = instruction.second.second.opcode;
         for (int i = 0; i < std::pow(2, 8 - opcode.size); i++) {
@@ -51,13 +53,12 @@ void getInstructionsTo(const std::string& outputFile) {
 }
 
 int main(int argc, char** argv) {
-
 #ifdef _WIN32
     SetConsoleOutputCP(65001);
 #endif
 
-    string inputFile;
-    string outputFile;
+    path inputFile;
+    path outputFile;
 
     bool writeInstructions = false;
     bool compile = true;
@@ -98,7 +99,7 @@ int main(int argc, char** argv) {
             cout << "please provide an output file if not compiling from source code\n";
             return 1;
         }
-        outputFile = (std::filesystem::path(inputFile).parent_path() / std::filesystem::path(inputFile).stem()).string() + ".o";
+        outputFile = inputFile.parent_path() / std::filesystem::path(inputFile).stem().concat(".o");
     }
 
     if (compile) {
@@ -106,7 +107,7 @@ int main(int argc, char** argv) {
     }
     if (writeInstructions || !compile) {
         if (compile) {
-            outputFile = (std::filesystem::path(outputFile).parent_path() / std::filesystem::path("INSTRUCTION_DECODER.o"));
+            outputFile = outputFile.parent_path() / std::filesystem::path("INSTRUCTION_DECODER.o");
         }
         getInstructionsTo(outputFile);
     }

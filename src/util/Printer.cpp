@@ -13,7 +13,7 @@ std::string Printer::buffer(size_t size, const std::string &ch) {
 }
 
 unsigned int Printer::sizeOfInt(unsigned int n) {
-    return static_cast<unsigned int>(std::log10(n) + 1);
+    return std::max(static_cast<unsigned int>(std::log10(n) + 1), static_cast<unsigned int>(1));
 }
 
 void
@@ -94,5 +94,56 @@ void Printer::printStats(std::vector<std::string> *files, unsigned long time) co
     } else {
         cout << "\n";
     }
-    cout << buffer(5 + leftBufferSize + 1, " ") << VERTICAL_LINE << "\n" << "Timer" << buffer(leftBufferSize + 1, " ") << UPWARD_CROSS << " " << std::to_string(time) << " μs\n";
+    cout << buffer(5 + leftBufferSize + 1, " ") << VERTICAL_LINE << "\n" << "Timer" << buffer(leftBufferSize + 1, " ") << CROSS << " " << std::to_string(time) << " μs\n";
+}
+
+void Printer::printHexDump(const uint8_t* byteFile, size_t size) const {
+    using std::cout;
+    cout << buffer(5 + leftBufferSize + 1, " ") << VERTICAL_LINE << "\n" << buffer(5 + leftBufferSize + 1, " ") << RIGHT_CROSS;
+    for (int i = 0; i < 8; i++) { // print column labels
+        if (i != 0) cout << TOP_LEFT_CURVE;
+        cout << " " << i << buffer(3 - sizeOfInt(i), " ");
+    }
+    cout << "\n" << buffer(5 + leftBufferSize + 1, " ") << RIGHT_CROSS;
+    for (int i = 0; i < 8; i++) { // line below column labels
+        if (i != 0 && i != 7){
+            cout << CROSS;
+        } else if (i == 7) {
+            cout << LEFT_CROSS;
+        }
+        if (i != 7) cout << buffer(4, HORIZONTAL_LINE);
+    }
+    cout << "\n";
+    const auto lines = (int)std::ceil((float)size / 8.0f);
+    for (size_t i = 0; i < lines; i++) {
+        cout << buffer(4 + leftBufferSize + 1 - sizeOfInt(i * 8), " ") << i*8 << " " << CROSS;
+        const auto hexesInLine = std::min(static_cast<int>(size - (i*8)), 8);
+        for (int indexInLine = 0; indexInLine < hexesInLine; indexInLine++) {
+            char hexed[2];
+            sprintf(hexed, "%x", byteFile[8*i + indexInLine]);
+            if (hexed[1] == '\0') hexed[1] = '0';
+            std::reverse(&hexed[0], &hexed[1]);
+            cout << " " << hexed << " ";
+            if (indexInLine != hexesInLine - 1) {
+                if ((i + 1) * 8 + indexInLine > size -2 && i + 1 != lines) {
+                    cout << UPWARD_CROSS;
+                } else {
+                    cout << CROSS;
+                }
+            }
+        }
+        if (i == lines -1 ) {
+            cout << "\n" << buffer(5 + leftBufferSize +1, " ") << BOTTOM_LEFT_CURVE;
+            for (int indexInLine = 0; indexInLine < hexesInLine - 1; indexInLine++) {
+                cout << buffer(4, HORIZONTAL_LINE) ;
+                if (indexInLine == hexesInLine - 2) {
+                    cout << BOTTOM_RIGHT_CURVE;
+                } else {
+                    cout << UPWARD_CROSS;
+                }
+            }
+        }
+        cout << "\n";
+    }
+    cout << "\n";
 }
