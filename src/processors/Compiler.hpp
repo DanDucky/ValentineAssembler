@@ -4,6 +4,7 @@
 #include <map>
 #include <optional>
 #include <string>
+#include <filesystem>
 #include <functional>
 #include <fstream>
 #include <queue>
