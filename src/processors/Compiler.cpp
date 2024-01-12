@@ -7,11 +7,10 @@ Compiler::Compiler(const InstructionSet& instructionSet) : instructions(&instruc
 
 }
 
-void Compiler::process(const std::string &fileName) {
-    const std::filesystem::path path(fileName);
-    std::ifstream stream(path);
+void Compiler::process(const std::filesystem::path &fileName) {
+    std::ifstream stream(fileName);
     if (!stream.is_open()) return;
-    filesProcessed.push_back(path.filename().string());
+    filesProcessed.push_back(fileName.filename().string());
     std::string line;
     unsigned int lineNum = 0;
     unsigned int innerMacroLineNum = 0;

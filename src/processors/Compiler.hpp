@@ -42,7 +42,7 @@ public:
     static std::map<std::string, std::optional<Address>> addresses;
     explicit Compiler(const InstructionSet& instructionSet);
     ~Compiler();
-    void process(const std::string &fileName);
+    void process(const std::filesystem::path &fileName);
     size_t size ();
     void compile(byte* out);
 };
