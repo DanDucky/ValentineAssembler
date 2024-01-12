@@ -21,8 +21,8 @@
 
 // program           PARAMS
 #define BRA_INTERNAL_PARAMS {0, 4} // 3
-#define JMP_INTERNAL_PARAMS {0, 4} // 3
-#define MPC_INTERNAL_PARAMS {1, 4} // X+Y -> PC
+#define JMP_INTERNAL_PARAMS {1, 4} // 3
+#define MPC_INTERNAL_PARAMS {0, 4} // X+Y -> PC
 #define LOD_INTERNAL_PARAMS {0, 4} // 2
 
 // memory            PARAMS

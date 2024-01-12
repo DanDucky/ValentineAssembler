@@ -26,7 +26,7 @@
 
 // program
 #define BRA_INTERNAL_OPCODE {6, 4} // 3
-#define JMP_INTERNAL_OPCODE {7, 4} // 3
+#define JMP_INTERNAL_OPCODE {6, 4} // 3
 #define LOD_INTERNAL_OPCODE {8, 4} // 2
 #define MPC_INTERNAL_OPCODE {7, 4} // X+Y -> PC
 
