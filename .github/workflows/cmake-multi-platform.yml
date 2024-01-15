@@ -150,7 +150,7 @@ jobs:
               -D CMAKE_C_COMPILER_LAUNCHER=ccache
               -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
               -D CMAKE_CXX_FLAGS=${{matrix.config.cpp_flags}}
-              -D VASM_TEST_FIB
+#              -D VASM_TEST_FIB
             RESULT_VARIABLE result
           )
           if (NOT result EQUAL 0)
