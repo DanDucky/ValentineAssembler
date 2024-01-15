@@ -1,25 +1,9 @@
-;/INIT=LOD% Y $!00000001   \    LOD%X $!00000001 ; init x and y to 1
-/INCLUDE=/home/danducky/Programming/C++/ValentineAssembler/docs/test/os/malloc.val
-
-.interrupt:1
-ADD
-ADD
-ADD
-
 .origin:0
-JMP #init
-ADD &TOP ; add x and y
-MOV %ACC %X ; move output to the x register
-BRA ^CRY #WAIT ; if the addition operation carries then go to NOP at &WAIT
-JMP #TOP ; if it didn't branch then jump back to the add
-LOD %Y $1 &WAIT ; essentially a NOP
-JMP #WAIT ; jump back to top of infinite wait loop
-
-.init
-;\INIT
-JMP #TOP
-
-;.test
-;ADD
-;ADD
-;BRA ^CRY #origin
+LOD %X $1
+LOD %Y $2
+LOD %STACK1 $0
+LOD %STACK2 $0
+STR %X
+LOD %STACK1 $1
+STR %Y
+JMP #origin

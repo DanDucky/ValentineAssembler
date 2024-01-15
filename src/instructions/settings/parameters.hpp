@@ -19,13 +19,13 @@
 #define LDP_INTERNAL_PARAMS {0b00, 4} // load pc
 #define LDS_INTERNAL_PARAMS {0b10, 4} // load stackptr
 
-// program           PARAMS
+// program
 #define BRA_INTERNAL_PARAMS {0, 4} // 3
 #define JMP_INTERNAL_PARAMS {1, 4} // 3
 #define MPC_INTERNAL_PARAMS {0, 4} // X+Y -> PC
 #define LOD_INTERNAL_PARAMS {0, 4} // 2
 
-// memory            PARAMS
+// memory
 #define STR_INTERNAL_PARAMS {0, 4} // 1
 #define PUL_INTERNAL_PARAMS {0, 4}
 #define PSH_INTERNAL_PARAMS {1, 4}

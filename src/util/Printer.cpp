@@ -122,7 +122,6 @@ void Printer::printHexDump(const uint8_t* byteFile, size_t size) const {
             char hexed[2];
             sprintf(hexed, "%x", byteFile[8*i + indexInLine]);
             if (hexed[1] == '\0') hexed[1] = '0';
-            std::reverse(&hexed[0], &hexed[1]);
             cout << " " << hexed << " ";
             if (indexInLine != hexesInLine - 1) {
                 if ((i + 1) * 8 + indexInLine > size -2 && i + 1 != lines) {
