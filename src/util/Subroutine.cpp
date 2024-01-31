@@ -47,6 +47,7 @@ Subroutine *Subroutine::addInstruction(Instruction *instruction) {
 }
 
 Subroutine::~Subroutine() {
+    if (isInlineUsed) return;
     for (const Instruction* instruction : instructions) {
         delete instruction;
     }
@@ -58,5 +59,20 @@ Subroutine::Subroutine(Address address) {
 
 size_t Subroutine::numberOfInstructions() {
     return instructions.size();
+}
+
+bool Subroutine::getIsInline() const {
+    return isInline;
+}
+
+// YOU ARE NOW THE OWNER OF THESE INSTRUCTIONS!!!! PLEASE DELETE THEM!!!!
+std::vector<Instruction *> *Subroutine::borrowAsInlineSubroutine() {
+    isInlineUsed = true;
+    return &instructions;
+}
+
+void Subroutine::insertSubroutine(Subroutine *subroutine) {
+    const auto inlineInstructions = subroutine->borrowAsInlineSubroutine();
+    instructions.insert(instructions.begin(), inlineInstructions->begin(), inlineInstructions->end());
 }
 

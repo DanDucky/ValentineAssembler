@@ -3,7 +3,10 @@
 
 std::map<std::string, std::optional<Address>> Compiler::addresses;
 
-Compiler::Compiler(const InstructionSet& instructionSet) : instructions(&instructionSet) , passedAddress(nullptr), preprocessor(&insertions, &passedAddress, &filesProcessed) {
+Compiler::Compiler(const InstructionSet& instructionSet) : instructions(&instructionSet) , passedAddress(nullptr),
+                                                           preprocessor(
+                                                                   &insertions, &passedAddress, &filesProcessed,
+                                                                   &inlineSubroutines, &inlineInsertion) {
 
 }
 
@@ -21,36 +24,46 @@ void Compiler::process(const std::filesystem::path &fileName) {
     begin = std::chrono::high_resolution_clock::now();
     while (!stream.eof()) {
         auto timer = std::chrono::high_resolution_clock::now();
-        if (insertions.empty()) {
+        if (insertions.empty() && !inlineInsertion.has_value()) {
             lineNum++;
             innerMacroLineNum = 0;
             getline(stream, line);
         } else {
-            line = insertions.front();
-            insertions.pop();
-            innerMacroLineNum++;
+            if (!insertions.empty()) {
+                line = insertions.front();
+                insertions.pop();
+                innerMacroLineNum++;
+            } else {
+                currentSubroutine->insertSubroutine(inlineInsertion.value());
+                inlineInsertion.reset();
+                continue;
+            }
         }
 
         if (preprocessor.processLine(line) == PROGRAM) {
-            if (line.starts_with(SUBROUTINE_PREFIX)) { // new subroutine
-                currentSubroutine = new Subroutine();
-                if (line.contains(SEPARATOR)) {
+            if (line.starts_with(SUBROUTINE_PREFIX) || line.starts_with(INLINE_SUBROUTINE_PREFIX)) { // new subroutine
+                currentSubroutine = new Subroutine(line.starts_with(INLINE_SUBROUTINE_PREFIX));
+                if (line.contains(SEPARATOR) && !currentSubroutine->getIsInline()) {
                     currentSubroutine->setOffset(Parser::fixedOffset(line));
                 }
 
                 if (currentSubroutine->isFixed()) {
                     fixedSubroutines.push_back(currentSubroutine);
-                } else {
+                } else if (!currentSubroutine->getIsInline()){
                     dynamicSubroutines.push_back(currentSubroutine);
                 }
 
                 const std::string subroutineName = line.substr(1, line.find(SEPARATOR) - 1);
 
-                Compiler::addresses.insert({
-                    subroutineName,
-                    {}
-                }); // remember to set this later!!!
-                passedAddress = &Compiler::addresses.find(subroutineName)->second;
+                if (!currentSubroutine->getIsInline()) {
+                    Compiler::addresses.insert({
+                                                       subroutineName,
+                                                       {}
+                                               }); // remember to set this later!!!
+                    passedAddress = &Compiler::addresses.find(subroutineName)->second;
+                } else { // inline subroutine
+                    inlineSubroutines.insert({subroutineName, currentSubroutine});
+                }
 
                 printer.value()->printSubroutine(subroutineName, lineNum);
             } else {
@@ -62,7 +75,7 @@ void Compiler::process(const std::filesystem::path &fileName) {
                     Instruction* instruction = constructor->second.first(&params[0]);
                     currentSubroutine->addInstruction(instruction);
 
-                    if (line.contains(GET_ADDRESS_PREFIX) || currentSubroutine->numberOfInstructions() == 1) { // if saving address or if it's the first instruction of a subroutine
+                    if ((line.contains(GET_ADDRESS_PREFIX) || currentSubroutine->numberOfInstructions() == 1) && !currentSubroutine->getIsInline()) { // if saving address or if it's the first instruction of a subroutine
                         instruction->setReferenced(passedAddress);
                     }
 
@@ -166,6 +179,9 @@ void Compiler::process(const std::filesystem::path &fileName) {
 Compiler::~Compiler() {
     for (const auto& subroutine : processed) {
         delete subroutine;
+    }
+    for (const auto& subroutine : inlineSubroutines) {
+        delete subroutine.second;
     }
     if (printer.has_value()) {
         delete printer.value();

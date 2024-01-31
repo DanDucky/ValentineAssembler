@@ -28,7 +28,9 @@ class Compiler {
 private:
     const InstructionSet* instructions;
     std::queue<std::string> insertions;
+    std::optional<Subroutine*> inlineInsertion;
     std::vector<Subroutine*> processed;
+    std::map<std::string, Subroutine*> inlineSubroutines;
     std::vector<std::string> filesProcessed;
     std::optional<Address>* passedAddress;
 

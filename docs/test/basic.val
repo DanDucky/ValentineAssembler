@@ -1,9 +1,31 @@
 .origin:0
+;JMP #loopovermem
+JMP #testmov
+
+.testmov
+STP
+LOD %ACC $255
+MOV %ACC %FLAGS
+LDP
+
+.testadd
+STP
+LOD %X $1
+LOD %Y $3
+ADD
+MOV %ACC %FLAGS
+LDP
+
+.loopovermem
 LOD %X $1
 LOD %Y $2
 LOD %STACK1 $0
 LOD %STACK2 $0
+LOD %FLAGS $!00010000
+STS
+STP
+LDS
 STR %X
 LOD %STACK1 $1
 STR %Y
-JMP #origin
+LDP

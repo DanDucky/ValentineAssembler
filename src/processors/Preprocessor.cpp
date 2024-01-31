@@ -2,11 +2,12 @@
 #include "../util/Parser.hpp"
 #include "Compiler.hpp"
 #include <algorithm>
-#include <cstdint>
 #include <fstream>
 #include <filesystem>
+#include <queue>
+#include <optional>
 
-void Preprocessor::addMacro(std::string macro, std::string alias) {
+void Preprocessor::addMacro(const std::string& macro, const std::string& alias) {
     if (macro == "INCLUDE") {
         // include whole file
         insertFile(alias);
@@ -78,7 +79,15 @@ MacroType Preprocessor::replaceMacros(std::string& line) {
     }
 
     if (numberOfMacros == 1 && line == USE_MACRO_PREFIX + stringMacros[0]) { // this means we are just replacing the whole line
-        const auto replaceWith = macros.find(stringMacros[0])->second;
+        const auto macro = macros.find(stringMacros[0]);
+        if (macro == macros.end()) { // if it was not found then check if it is an inline macro
+            const auto inlineSubroutine = inlineSubroutines->find(stringMacros[0]);
+            if (inlineSubroutine != inlineSubroutines->end()) {
+                *inlineInsertion = inlineSubroutine->second;
+                return MULTI;
+            }
+        }
+        const auto replaceWith = macro->second;
         const auto lineCount = std::ranges::count(line, MULTI_LINE) + 1;
         std::string macroLines[lineCount];
         Parser::split(replaceWith, macroLines, lineCount, MULTI_LINE);
@@ -127,7 +136,9 @@ void Preprocessor::registerAddresses(std::string &line) {
     *setAddress = &Compiler::addresses.find(addressName)->second;
 }
 
-Preprocessor::Preprocessor(std::queue<std::string> *insertions, std::optional<Address>** address, std::vector<std::string>* files) {
+Preprocessor::Preprocessor(std::queue<std::string> *insertions, std::optional<Address> **address,
+                           std::vector<std::string> *files, std::map<std::string, Subroutine *> *inlineSubroutines,
+                           std::optional<Subroutine *> *inlineInsertion) : inlineSubroutines(inlineSubroutines), inlineInsertion(inlineInsertion) {
     this->insertions = insertions;
     this->setAddress = address;
     this->files = files;
