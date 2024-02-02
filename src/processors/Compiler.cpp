@@ -29,7 +29,7 @@ void Compiler::process(const std::filesystem::path &fileName) {
         }
         auto timer = std::chrono::high_resolution_clock::now();
         if (!inlineInsertion.has_value()) {
-            lineNum++;
+            if (fileTrace.size() == 1) lineNum++;
             innerMacroLineNum = 0;
             getline(fileTrace.top().second, line);
         } else {
