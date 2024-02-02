@@ -14,7 +14,6 @@ private:
     std::vector<Instruction*> instructions;
     std::optional<Address> fixedOffset;
     const bool isInline = false;
-    bool isInlineUsed = false;
 public:
     Subroutine()=default;
     explicit Subroutine (Address address);
@@ -31,9 +30,6 @@ public:
 
     [[nodiscard]] Address getOffset () const;
     [[nodiscard]] bool getIsInline() const;
-
-    [[nodiscard]] std::vector<Instruction*>* borrowAsInlineSubroutine() ;
-    void insertSubroutine(Subroutine* subroutine);
 
     size_t size ();
     size_t numberOfInstructions();

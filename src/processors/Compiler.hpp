@@ -27,7 +27,7 @@
 class Compiler {
 private:
     const InstructionSet* instructions;
-    std::queue<std::string> insertions;
+    std::stack<std::pair<const std::filesystem::path, std::ifstream>> fileTrace;
     std::optional<Subroutine*> inlineInsertion;
     std::vector<Subroutine*> processed;
     std::map<std::string, Subroutine*> inlineSubroutines;
@@ -37,11 +37,11 @@ private:
     Preprocessor preprocessor;
     std::optional<Printer*> printer = nullptr;
 
-    static size_t countLines(std::ifstream& file);
     typedef std::chrono::time_point<std::chrono::high_resolution_clock> TimePoint;
     TimePoint begin;
 
 public:
+    [[nodiscard]] static size_t countLines(std::ifstream& file);
     static std::map<std::string, std::optional<Address>> addresses;
     explicit Compiler(const InstructionSet& instructionSet);
     ~Compiler();

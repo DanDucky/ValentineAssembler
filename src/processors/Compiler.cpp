@@ -1,43 +1,43 @@
 #include <filesystem>
 #include "Compiler.hpp"
+#include "../instructions/include/InlineSubroutineInstruction.hpp"
 
 std::map<std::string, std::optional<Address>> Compiler::addresses;
 
 Compiler::Compiler(const InstructionSet& instructionSet) : instructions(&instructionSet) , passedAddress(nullptr),
-                                                           preprocessor(
-                                                                   &insertions, &passedAddress, &filesProcessed,
-                                                                   &inlineSubroutines, &inlineInsertion) {
+                                                           preprocessor(&passedAddress, &filesProcessed,
+                                                                        &inlineSubroutines, &inlineInsertion, &fileTrace) {
 
 }
 
 void Compiler::process(const std::filesystem::path &fileName) {
-    std::ifstream stream(fileName);
-    if (!stream.is_open()) return;
     filesProcessed.push_back(fileName.filename().string());
+    fileTrace.emplace(fileName, std::ifstream(fileName));
     std::string line;
     unsigned int lineNum = 0;
     unsigned int innerMacroLineNum = 0;
     Subroutine* currentSubroutine;
     std::vector<Subroutine*> dynamicSubroutines;
     std::vector<Subroutine*> fixedSubroutines;
-    printer = new Printer(countLines(stream));
+    printer = new Printer(countLines(fileTrace.top().second));
     begin = std::chrono::high_resolution_clock::now();
-    while (!stream.eof()) {
+    while (!fileTrace.empty()) {
+        if (fileTrace.top().second.eof()) {
+            fileTrace.top().second.close();
+            fileTrace.pop();
+            continue;
+        }
         auto timer = std::chrono::high_resolution_clock::now();
-        if (insertions.empty() && !inlineInsertion.has_value()) {
+        if (!inlineInsertion.has_value()) {
             lineNum++;
             innerMacroLineNum = 0;
-            getline(stream, line);
+            getline(fileTrace.top().second, line);
         } else {
-            if (!insertions.empty()) {
-                line = insertions.front();
-                insertions.pop();
-                innerMacroLineNum++;
-            } else {
-                currentSubroutine->insertSubroutine(inlineInsertion.value());
-                inlineInsertion.reset();
-                continue;
-            }
+            Instruction* inlineFunction = new InlineSubroutineInstruction(inlineInsertion.value());
+            if (currentSubroutine->numberOfInstructions() == 0) inlineFunction->setReferenced(passedAddress);
+            currentSubroutine->addInstruction(inlineFunction);
+            inlineInsertion.reset();
+            continue;
         }
 
         if (preprocessor.processLine(line) == PROGRAM) {
@@ -75,7 +75,7 @@ void Compiler::process(const std::filesystem::path &fileName) {
                     Instruction* instruction = constructor->second.first(&params[0]);
                     currentSubroutine->addInstruction(instruction);
 
-                    if ((line.contains(GET_ADDRESS_PREFIX) || currentSubroutine->numberOfInstructions() == 1) && !currentSubroutine->getIsInline()) { // if saving address or if it's the first instruction of a subroutine
+                    if (line.contains(GET_ADDRESS_PREFIX) || (currentSubroutine->numberOfInstructions() == 1 && !currentSubroutine->getIsInline())) { // if saving address or if it's the first instruction of a subroutine
                         instruction->setReferenced(passedAddress);
                     }
 
@@ -88,8 +88,6 @@ void Compiler::process(const std::filesystem::path &fileName) {
             }
         }
     }
-    stream.close();
-    // here re-arrange subroutines to best order
 
     if (!fixedSubroutines.empty()) {
         std::qsort(

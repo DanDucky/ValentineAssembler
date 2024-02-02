@@ -1,17 +1,2 @@
-.begin:0
-BRA ^CRY #begin
-BRA ^CRY #begin
-BRA ^CRY #begin
-BRA ^CRY #begin
-BRA ^CRY #begin
-BRA ^CRY #begin
-BRA ^CRY #begin
-BRA ^CRY #begin
-BRA ^CRY #begin
-BRA ^CRY #begin
-BRA ^CRY #begin
-BRA ^CRY #begin
-BRA ^CRY #begin
-BRA ^CRY #begin
-BRA ^CRY #begin
+.test
 BRA ^CRY #begin

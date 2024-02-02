@@ -32,7 +32,7 @@ protected:
     }
 
 public:
-    size_t size () const {
+    [[nodiscard]] size_t size () const {
         return this->byteSize;
     }
     void assignOffset(Address offset) {
@@ -41,7 +41,7 @@ public:
     void setReferenced(std::optional<Address>* addr) {
         referenceAddress = addr;
     }
-    [[nodiscard]] bool hasReference() const {
+    [[nodiscard]] bool isReferenced() const {
         return this->referenceAddress.has_value();
     }
 

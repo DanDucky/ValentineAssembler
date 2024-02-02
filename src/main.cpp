@@ -35,7 +35,7 @@ void compileFiles(const path& inputFile, const path& outputFile) {
     }
     program.compile(out);
 
-    outFile.write(reinterpret_cast<const char *>(out), size);
+    outFile.write(reinterpret_cast<const char *>(out), (long)size);
     outFile.close();
 }
 

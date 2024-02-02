@@ -1,4 +1,5 @@
-/INCLUDE=/home/danducky/Programming/C++/ValentineAssembler/docs/test/os/const.val
+/INCLUDE=const.val
+;/INCLUDE=../allLod.val
 
 |save_return
 LOD %STACK1 $\STACKPTR0
@@ -100,8 +101,7 @@ ADD
 MOV %ACC %STACK2
 
 
-.origin:0
+.begin:0
 \save_return
 
 .interrupt:1
-

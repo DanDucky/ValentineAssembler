@@ -20,7 +20,7 @@ size_t Subroutine::size() {
 void Subroutine::assignReferences() {
     size_t size = fixedOffset.value(); // if this fails then all hell has gone loose
     for (const auto& instruction : instructions) {
-        if (instruction->hasReference()) {
+        if (instruction->isReferenced()) {
             instruction->assignOffset(Address::addressFromOffset(size));
         }
 
@@ -47,7 +47,6 @@ Subroutine *Subroutine::addInstruction(Instruction *instruction) {
 }
 
 Subroutine::~Subroutine() {
-    if (isInlineUsed) return;
     for (const Instruction* instruction : instructions) {
         delete instruction;
     }
@@ -64,15 +63,3 @@ size_t Subroutine::numberOfInstructions() {
 bool Subroutine::getIsInline() const {
     return isInline;
 }
-
-// YOU ARE NOW THE OWNER OF THESE INSTRUCTIONS!!!! PLEASE DELETE THEM!!!!
-std::vector<Instruction *> *Subroutine::borrowAsInlineSubroutine() {
-    isInlineUsed = true;
-    return &instructions;
-}
-
-void Subroutine::insertSubroutine(Subroutine *subroutine) {
-    const auto inlineInstructions = subroutine->borrowAsInlineSubroutine();
-    instructions.insert(instructions.begin(), inlineInstructions->begin(), inlineInstructions->end());
-}
-
