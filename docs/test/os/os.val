@@ -3,7 +3,6 @@
 
 .begin:0
 \save_return
-JMP #interrupt
-
-.interrupt:1
 ADD
+
+;.interrupt:1

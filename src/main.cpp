@@ -2,8 +2,8 @@
 #include <string>
 #include <filesystem>
 #include <cassert>
+#include <optargParser.hpp>
 
-#include "../include/universalGetopt.hpp"
 #include "instructions/include/InstructionLibrary.hpp"
 #include "util/Subroutine.hpp"
 #include "processors/Preprocessor.hpp"
@@ -57,57 +57,38 @@ int main(int argc, char** argv) {
     SetConsoleOutputCP(65001);
 #endif
 
-    path inputFile;
-    path outputFile;
+    cli::Opt<path, CLI_OPTION_NULL> inputFile("Source File", "input .val source file", "f", "src", "file");
+    cli::Opt<path, CLI_OPTION_NULL> outputFile("Binary Output", "output file for flashing to rom", "o", "output");
+    cli::Opt<bool, CLI_OPTION_NULL> writeInstructions("Write Instruction Set", "write file for decoder", "i", "instructions");
+    cli::Opt<bool, CLI_OPTION_NULL> noCompiler("Turn Off Compiler", "turn off compiler function, normally so you can only execute instruciton set generation", "n", "nc", "c");
 
-    bool writeInstructions = false;
-    bool compile = true;
+    cli::parse(argc, argv, writeInstructions, noCompiler, inputFile, outputFile);
 
-    if (argc == 1) goto noArgs;
-    int opt;
-    while((opt = uni::getopt(argc, argv, "f:o:in")) != -1) {
-        switch_no_default(opt) {
-            case 'f' :
-                inputFile = uni::optarg;
-                break;
-            case 'o' :
-                outputFile = uni::optarg;
-                break;
-            case 'i' :
-                writeInstructions = true;
-                break;
-            case 'n' :
-                compile = false;
-                break;
-        }
-    }
-    noArgs:
-
-    if (inputFile.empty()) {
+    if (!inputFile.hasValue()) {
         cout << "please input a file to compile or click ENTER to only compile instructions:\n\t";
         std::string input;
         cin >> input;
         if (input.empty()) {
-            compile = false;
+            noCompiler = true;
         } else {
-            inputFile = input;
+            inputFile = path(input);
         }
     }
 
-    if (outputFile.empty()) {
-        if (inputFile.empty()) {
+    if (!outputFile.hasValue()) {
+        if (!inputFile.hasValue()) {
             cout << "please provide an output file if not compiling from source code\n";
             return 1;
         }
-        outputFile = inputFile.parent_path() / std::filesystem::path(inputFile).stem().concat(".o");
+        outputFile = ((path)inputFile).parent_path() / std::filesystem::path(inputFile).stem().concat(".o");
     }
 
-    if (compile) {
+    if (!noCompiler) {
         compileFiles(inputFile, outputFile);
     }
-    if (writeInstructions || !compile) {
-        if (compile) {
-            outputFile = outputFile.parent_path() / std::filesystem::path("INSTRUCTION_DECODER.o");
+    if (writeInstructions || noCompiler) {
+        if (!noCompiler) {
+            outputFile = ((path)outputFile).parent_path() / std::filesystem::path("INSTRUCTION_DECODER.o");
         }
         getInstructionsTo(outputFile);
     }

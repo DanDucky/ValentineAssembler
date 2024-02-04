@@ -3,3 +3,4 @@ cmake-build-debug*
 TestInputs
 /docs/Parts.txt
 include/exprtk.hpp
+include/optargParser.hpp
