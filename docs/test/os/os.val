@@ -3,6 +3,11 @@
 
 .begin:0
 \save_return
+JMP #test
 ADD
 
-;.interrupt:1
+.test:1
+ADD
+ADD
+ADD
+JMP #return_last

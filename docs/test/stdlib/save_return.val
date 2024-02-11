@@ -1,3 +1,5 @@
+/INCLUDE=reset_carry.val
+
 |save_return
 LOD %STACK1 $\STACKPTR0
 LOD %STACK2 $\STACKPTRPAGE
@@ -96,3 +98,49 @@ MOV %STACK2 %X
 LOD %Y $0
 ADD
 MOV %ACC %STACK2
+
+.return_last
+LOD %STACK1 $\STACKPTR0
+LOD %STACK2 $\STACKPTRPAGE
+; stack is now set to the first byte of the stack ptr address
+PUL %X
+; grab the stack ptr
+LOD %STACK1 $\STACKPTR1
+PUL %Y
+; grab the stack ptr page
+MOV %X %STACK1
+MOV %Y %STACK2
+; move stack ptr to the current position
+
+\reset_carry
+; reset carry flag
+
+MOV %STACK1 %X
+LOD %Y $2
+SUB
+MOV %ACC %STACK1
+MOV %STACK2 %X
+LOD %Y $0
+SUB
+MOV %ACC %STACK2
+PUL %ACC
+MOV %STACK1 %X
+MOV %STACK2 %Y
+MOV %ACC %STACK1
+MOV %Y %STACK2
+STS
+MOV %X %STACK1
+\reset_carry
+MOV %STACK1 %X
+LOD %Y $1
+ADD
+LDS
+MOV %STACK2 %Y
+MOV %ACC %STACK2
+LOD %X $0
+ADD
+MOV %STACK1 %X
+MOV %STACK2 %STACK1
+MOV %ACC %STACK2
+PUL %Y
+MPC

@@ -1,0 +1,6 @@
+; uses the flags, x, y, and acc registers!!! do not leave anything in these registers before running!
+|reset_carry
+MOV %FLAGS %X
+LOD %Y $10111111
+AND
+MOV %ACC %FLAGS

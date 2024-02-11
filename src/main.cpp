@@ -16,12 +16,6 @@
 
 using std::filesystem::path;
 
-#define switch_no_default(args) \
-    switch(args)                \
-    default:                            \
-    if (true) assert("missing switch case"); \
-    else // my beloved
-
 using namespace std;
 
 void compileFiles(const path& inputFile, const path& outputFile) {
@@ -57,10 +51,10 @@ int main(int argc, char** argv) {
     SetConsoleOutputCP(65001);
 #endif
 
-    cli::Opt<path, CLI_OPTION_NULL> inputFile("Source File", "input .val source file", "f", "src", "file");
-    cli::Opt<path, CLI_OPTION_NULL> outputFile("Binary Output", "output file for flashing to rom", "o", "output");
-    cli::Opt<bool, CLI_OPTION_NULL> writeInstructions("Write Instruction Set", "write file for decoder", "i", "instructions");
-    cli::Opt<bool, CLI_OPTION_NULL> noCompiler("Turn Off Compiler", "turn off compiler function, normally so you can only execute instruciton set generation", "n", "nc", "c");
+    cli::Opt<path> inputFile("Source File", "input .val source file", "f", "src", "file");
+    cli::Opt<path> outputFile("Binary Output", "output file for flashing to rom", "o", "output");
+    cli::Opt<bool> writeInstructions("Write Instruction Set", "write file for decoder", "i", "instructions");
+    cli::Opt<bool> noCompiler("Turn Off Compiler", "turn off compiler function, normally so you can only execute instruciton set generation", "n", "nc", "c");
 
     cli::parse(argc, argv, writeInstructions, noCompiler, inputFile, outputFile);
 
