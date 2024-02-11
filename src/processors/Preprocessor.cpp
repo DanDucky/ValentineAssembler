@@ -125,6 +125,7 @@ Preprocessor::Preprocessor(std::optional<Address> **address, std::vector<std::st
 }
 
 void Preprocessor::insertFile(const std::string &file) {
+    if (std::find(files->begin(), files->end(), file) != files->end()) return;
     const std::filesystem::path newFile(file);
     const std::filesystem::path path = newFile.is_absolute() ? newFile : std::filesystem::path(fileTrace->top().first.parent_path() / newFile);
     files->push_back(path.filename().string());
